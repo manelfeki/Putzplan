@@ -34,7 +34,7 @@
 .prettierignore
 
 # JetBrains IDEs
-/.idea
+.idea
 .editorconfig
 
 npm-debug.log*
