@@ -19,6 +19,24 @@
 .env.test.local
 .env.production.local
 
+# linters
+.eslintcache/
+.eslintrc
+.eslintrc.yaml
+.eslintrc.json
+.eslintrc.js
+.stylelintcache/
+.stylelintrc
+.stylelintrc.yaml
+.stylelintrc.json
+.stylelintrc.js
+.prettierrc
+.prettierignore
+
+# JetBrains IDEs
+/.idea
+.editorconfig
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
