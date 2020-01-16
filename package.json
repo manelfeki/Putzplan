@@ -5,10 +5,12 @@
   "licence": "MIT",
   "version": "0.3.0",
   "private": false,
+  "https": false,
+  "proxy": "http://localhost:8080",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "mocha --src/backend/test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -32,8 +34,11 @@
     "@material-ui/styles": "^4.2.1",
     "chart.js": "^2.8.0",
     "clsx": "^1.0.4",
+    "express": "^4.17.1",
     "history": "^4.9.0",
+    "mocha": "^7.0.0",
     "moment": "^2.24.0",
+    "mongoose": "^5.8.7",
     "node-sass": "^4.12.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
