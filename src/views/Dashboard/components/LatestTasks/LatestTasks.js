@@ -36,12 +36,12 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const LatestProducts = props => {
+const LatestTasks = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
 
-  const [products] = useState(mockData);
+  const [tasks] = useState(mockData);
 
   return (
     <Card
@@ -49,27 +49,27 @@ const LatestProducts = props => {
       className={clsx(classes.root, className)}
     >
       <CardHeader
-        subtitle={`${products.length} in total`}
-        title="Latest products"
+        subtitle={`${tasks.length} in total`}
+        title="Latest tasks"
       />
       <Divider />
       <CardContent className={classes.content}>
         <List>
-          {products.map((product, i) => (
+          {tasks.map((task, i) => (
             <ListItem
-              divider={i < products.length - 1}
-              key={product.id}
+              divider={i < tasks.length - 1}
+              key={task.id}
             >
               <ListItemAvatar>
                 <img
-                  alt="Product"
+                  alt="task"
                   className={classes.image}
-                  src={product.imageUrl}
+                  src={task.imageUrl}
                 />
               </ListItemAvatar>
               <ListItemText
-                primary={product.name}
-                secondary={`Updated ${product.updatedAt.fromNow()}`}
+                primary={task.name}
+                secondary={`Updated ${task.updatedAt.fromNow()}`}
               />
               <IconButton
                 edge="end"
@@ -95,8 +95,8 @@ const LatestProducts = props => {
   );
 };
 
-LatestProducts.propTypes = {
+LatestTasks.propTypes = {
   className: PropTypes.string
 };
 
-export default LatestProducts;
+export default LatestTasks;

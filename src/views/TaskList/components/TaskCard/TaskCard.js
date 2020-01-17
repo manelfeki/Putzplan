@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const TaskCard = props => {
-  const { className, product, ...rest } = props;
+  const { className, task, ...rest } = props;
 
   const classes = useStyles();
 
@@ -56,7 +56,7 @@ const TaskCard = props => {
           gutterBottom
           variant="h4"
         >
-          {product.title}
+          {task.title}
         </Typography>
       </CardContent>
       <Divider/>
@@ -97,7 +97,7 @@ const TaskCard = props => {
 
 TaskCard.propTypes = {
   className: PropTypes.string,
-  product: PropTypes.object.isRequired
+  task: PropTypes.object.isRequired
 };
 
 export default TaskCard;

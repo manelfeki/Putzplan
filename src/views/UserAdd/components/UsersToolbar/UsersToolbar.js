@@ -2,10 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
-import { Button } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-
-import { SearchInput } from 'components';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -40,22 +36,11 @@ const UsersToolbar = props => {
       className={clsx(classes.root, className)}
     >
       <div className={classes.row}>
-        <span className={classes.spacer} />
-        <Button className={classes.importButton}>Delete resident</Button>
-        <Link to="/users/add">
-          <Button
-            color="primary"
-            variant="contained"
-          >
-            Add resident
-          </Button>
-        </Link>
+        <span className={classes.spacer}/>
+
       </div>
       <div className={classes.row}>
-        <SearchInput
-          className={classes.searchInput}
-          placeholder="Search resident"
-        />
+
       </div>
     </div>
   );

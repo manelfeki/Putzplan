@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 const TaskList = () => {
   const classes = useStyles();
 
-  const [products] = useState(mockData);
+  const [tasks] = useState(mockData);
 
   return (
     <div className={classes.root}>
@@ -35,15 +35,15 @@ const TaskList = () => {
           container
           spacing={3}
         >
-          {products.map(product => (
+          {tasks.map(task => (
             <Grid
               item
-              key={product.id}
+              key={task.id}
               lg={4}
               md={6}
               xs={12}
             >
-              <TaskCard product={product} />
+              <TaskCard task={task} />
             </Grid>
           ))}
         </Grid>

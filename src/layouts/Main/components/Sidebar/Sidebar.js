@@ -55,7 +55,7 @@ const Sidebar = props => {
     },
     {
       title: 'Tasks',
-      href: '/products',
+      href: '/tasks',
       icon: <AssignmentIcon />
     },
     {
