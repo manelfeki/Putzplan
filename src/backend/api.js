@@ -28,7 +28,7 @@ api.get('/residents', (req, res) => {
             if (err) {
                 res.send('error has occured');
             } else {
-                console.log(residents);
+
                 res.json(residents);
             }
         })
@@ -52,7 +52,7 @@ api.post('/residents', function (req, res) {
 })
 
 //update a resident
-// in front-end, we use UPDATE
+
 api.put('/residents/:id', function (req, res) {
     console.log('yessaie')
     Resident.findOneAndUpdate({
@@ -73,7 +73,6 @@ api.put('/residents/:id', function (req, res) {
 
 //delete a resident
 api.delete('/residents/:id', function (req, res) {
-    console.log('truc');
     Resident.findOneAndRemove({
         _id: req.params.id
     }, function (err, resident) {
@@ -96,7 +95,7 @@ api.get('/tasks', (req, res) => {
             if (err) {
                 res.send('error has occured');
             } else {
-                console.log(tasks);
+
                 res.json(tasks);
             }
         })
@@ -109,6 +108,7 @@ api.post('/tasks', function (req, res) {
     newTask.name = req.body.name;
     newTask.description = req.body.description;
     newTask.assignedresident = req.body.assignedresident;
+    newTask.isdone = req.body.isdone;
     newTask.startdate = new Date(parseInt(req.body.startdate));
     newTask.enddate = new Date(parseInt(req.body.enddate));
 
@@ -122,6 +122,47 @@ api.post('/tasks', function (req, res) {
     })
 })
 
+//update a task
+
+api.put('/tasks/:id', function (req, res) {
+    Task.findOneAndUpdate({
+        _id: req.params.id
+    },
+        {
+            $set: {
+                name: req.body.name,
+                description: req.body.description,
+                assignedresident: req.body.assignedresident,
+                isdone: req.body.isdone,
+                startdate: req.body.startdate,
+                enddate: req.body.enddate
+            }
+        },
+        { upsert: true },
+        function (err, newTask) {
+            if (err) {
+                console.log('error occured');
+            } else {
+                console.log(newTask);
+                res.status(204)
+            }
+        }
+    )
+})
+
+//delete a task
+api.delete('/tasks/:id', function (req, res) {
+    Task.findOneAndRemove({
+        _id: req.params.id
+    }, function (err, task) {
+        if (err) {
+            res.status(500).end(JSON.stringify({ err: "error deleting task" }));
+        } else {
+            console.log(task);
+            res.status(204);
+        }
+    })
+})
 
 
 app.use('/api', api);
