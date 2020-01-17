@@ -33,33 +33,6 @@ const UsersToolbar = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
-//example of function to add a resident (linked to the "add resident" button)
-  const addResidentEvent = () => {
-
-    // allow json
-    let headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-Type', 'application/json');
-
-    // need to stringify the data before sending it
-    let body = JSON.stringify({
-      name: 'luke',
-      ArrivalDate: Date.now().toString()
-    });
-    // promise
-    fetch('api/residents', {
-      method: 'POST',
-      body,
-      headers
-    }).then(async res => {
-      if (res.status == 200) {
-        console.log(await res.json());
-        // here should be the code to show the resident ont the list.
-      } else {
-        throw new Error(await res.json());
-      }
-    }).catch(err => console.log(err));
-  };
   return (
     <div
       {...rest}
@@ -72,7 +45,6 @@ const UsersToolbar = props => {
           <Button
             color="primary"
             variant="contained"
-            onClick={addResidentEvent}
           >
             Add resident
           </Button>

@@ -58,7 +58,7 @@ const UserAddForm = props => {
         title="Add a new resident"
       />
       <CardContent>
-        <FormControl className={classes.root} onSubmit={handleSubmit}>
+        <form className={classes.root} onSubmit={handleSubmit}>
           <div>
             <ThemeProvider theme={theme}>
               <Field
@@ -98,7 +98,7 @@ const UserAddForm = props => {
               </ThemeProvider>
             </CardActions>
           </div>
-        </FormControl>
+        </form>
       </CardContent>
     </Card>
   );
