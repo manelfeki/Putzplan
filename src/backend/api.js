@@ -20,9 +20,9 @@ app.use(bodyParser.json({ strict: false }));
 
 //RESIDENTS API
 
-//get residents
+//get all residents
 api.get('/residents', (req, res) => {
-    console.log('getting all residents')
+
     Resident.find({})
         .exec(function (err, residents) {
             if (err) {
@@ -30,6 +30,22 @@ api.get('/residents', (req, res) => {
             } else {
 
                 res.json(residents);
+            }
+        })
+})
+
+//get one resident
+api.get('/residents/:id', (req, res) => {
+
+    Resident.findOne({
+        _id: req.params.id
+    })
+        .exec(function (err, resident) {
+            if (err) {
+                res.send('error has occured while getting a resident');
+            } else {
+
+                res.json(resident);
             }
         })
 })
@@ -85,9 +101,30 @@ api.delete('/residents/:id', function (req, res) {
     })
 })
 
-//TASK API
 
-//get tasks
+
+
+
+
+
+
+//TASK API
+api.get('/tasks/:id', (req, res) => {
+
+    Task.findOne({
+        _id: req.params.id
+    })
+        .exec(function (err, task) {
+            if (err) {
+                res.send('error has occured while getting a task');
+            } else {
+
+                res.json(task);
+            }
+        })
+})
+
+//get all tasks
 api.get('/tasks', (req, res) => {
     console.log('getting all tasks')
     Task.find({})
@@ -100,6 +137,8 @@ api.get('/tasks', (req, res) => {
             }
         })
 })
+
+//get one task
 
 //create task
 api.post('/tasks', function (req, res) {
