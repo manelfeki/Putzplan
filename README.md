@@ -1,3 +1,16 @@
+## start the server ##
+
+-first, install mongo db community server
+-then, in Putzplan/src/backend, install mongoose : npm install mongoose
+
+to start the server , type in Putzplan/src/backend : " node ./api.js"
+the server is located in http://localhost:8080/
+
+list of residents : http://localhost:8080/api/residents
+list of tasks : http://localhost:8080/api/tasks
+
+
+
 ## [Devias Kit - Admin Dashboard](https://react-material-dashboard.devias.io/dashboard) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?text=%F0%9F%9A%A8Devias%20Freebie%20Alert%20-%20An%20awesome%20ready-to-use%20register%20page%20made%20with%20%23material%20%23react%0D%0Ahttps%3A%2F%2Fdevias.io%20%23createreactapp%20%23devias%20%23material%20%23freebie%20%40devias-io)
 
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
@@ -90,19 +103,8 @@ material-react-dashboard
 	└── Routes.jsx
 ```
 
-## Resources
-
-- More freebies like this one: <https://devias.io>
-
 ## Reporting Issues:
 
 - [Github Issues Page](https://github.com/devias-io/react-material-dashboard/issues?ref=devias-io)
 
-## License
-
-- Licensed under MIT (https://github.com/devias-io/react-material-dashboard/blob/master/LICENSE.md)
-
-## Contact Us
-
-- Email Us: contact@devias.io
 - [Follow us on Instagram](https://www.instagram.com/deviasio/)
