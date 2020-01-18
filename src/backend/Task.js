@@ -5,22 +5,19 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const TaskSchema = new Schema({
-    name: {
-        type: String
-    },
     description: {
         type: String
     },
-    assignedresident: {
+    assignedResident: {
         type: mongoose.Schema.Types.ObjectId
     },
-    isdone: {
+    isDone: {
         type: Boolean
     },
-    startdate: {
+    startDate: {
         type: Date
     },
-    enddate: {
+    endDate: {
         type: Date
     }
 
