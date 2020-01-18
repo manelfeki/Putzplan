@@ -8,9 +8,12 @@ const ResidentSchema = new Schema({
     name: {
         type: String
     },
-    ArrivalDate: {
-        type: Date
+    phonenumber: {
+        type: String
     }
+    // ArrivalDate: {
+    //     type: Date
+    // }
 });
 
 //const Resident = mongoose.model('resident', ResidentSchema);

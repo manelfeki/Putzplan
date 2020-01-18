@@ -55,7 +55,8 @@ api.post('/residents', function (req, res) {
     var newResident = new Resident();
 
     newResident.name = req.body.name;
-    newResident.ArrivalDate = new Date(parseInt(req.body.ArrivalDate));
+    newResident.phonenumber = req.body.phonenumber;
+    //newResident.ArrivalDate = new Date(parseInt(req.body.ArrivalDate));
 
     newResident.save(function (err, resident) {
         if (err) {
@@ -74,13 +75,18 @@ api.put('/residents/:id', function (req, res) {
     Resident.findOneAndUpdate({
         _id: req.params.id
     },
-        { $set: { name: req.body.name } },
+        {
+            $set: {
+                name: req.body.name,
+                phonenumber: req.body.phonenumber
+            }
+        },
         { upsert: true },
         function (err, newResident) {
             if (err) {
                 console.log('error occured');
             } else {
-                console.log(newResident);
+                //console.log(newResident);
                 res.status(204).end(JSON.stringify({ err: "error updating resident" }));
             }
         }
@@ -95,7 +101,7 @@ api.delete('/residents/:id', function (req, res) {
         if (err) {
             res.status(500).end(JSON.stringify({ err: "error deleting resident" }));
         } else {
-            console.log(resident);
+            //console.log(resident);
             res.status(204);
         }
     })
