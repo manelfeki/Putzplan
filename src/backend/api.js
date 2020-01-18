@@ -102,13 +102,15 @@ api.delete('/residents/:id', function (req, res) {
 })
 
 
-
+//--------------------------------------------------------------------------------------------
 
 
 
 
 
 //TASK API
+
+//get one task
 api.get('/tasks/:id', (req, res) => {
 
     Task.findOne({
@@ -138,7 +140,7 @@ api.get('/tasks', (req, res) => {
         })
 })
 
-//get one task
+
 
 //create task
 api.post('/tasks', function (req, res) {
@@ -180,10 +182,10 @@ api.put('/tasks/:id', function (req, res) {
         { upsert: true },
         function (err, newTask) {
             if (err) {
-                console.log('error occured');
+                res.status(500).end(JSON.stringify({ err: "error updating task" }));
             } else {
                 console.log(newTask);
-                res.status(204)
+                res.status(200).json(newTask);
             }
         }
     )
@@ -198,11 +200,24 @@ api.delete('/tasks/:id', function (req, res) {
             res.status(500).end(JSON.stringify({ err: "error deleting task" }));
         } else {
             console.log(task);
-            res.status(204);
+            res.status(204).end();
         }
     })
 })
 
+//get all tasks to a resident
+api.get('/residentandhistasks/:id', function (req, res) {
+    Task.find({
+        assignedresident: req.params.id
+    }, function (err, tasks) {
+        if (err) {
+            res.status(500).end(JSON.stringify({ err: "error " }));
+        } else {
+            res.json(tasks);
+
+        }
+    })
+})
 
 app.use('/api', api);
 app.listen(8080);
