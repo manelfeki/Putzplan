@@ -8,7 +8,7 @@ const ResidentSchema = new Schema({
     name: {
         type: String
     },
-    phonenumber: {
+    phoneNumber: {
         type: String
     }
     // ArrivalDate: {

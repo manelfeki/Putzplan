@@ -22,7 +22,7 @@ const UserAdd = () => {
     // need to stringify the data before sending it
     let body = JSON.stringify({
       name: values.residentName,
-      ArrivalDate: Date.now().toString()
+      phoneNumber: values.phoneNumber
     });
     // promise
     fetch('api/residents', {
