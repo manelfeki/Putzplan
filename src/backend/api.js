@@ -55,7 +55,7 @@ api.post('/residents', function (req, res) {
     var newResident = new Resident();
 
     newResident.name = req.body.name;
-    newResident.phonenumber = req.body.phonenumber;
+    newResident.phoneNumber = req.body.phoneNumber;
     //newResident.ArrivalDate = new Date(parseInt(req.body.ArrivalDate));
 
     newResident.save(function (err, resident) {
@@ -78,7 +78,7 @@ api.put('/residents/:id', function (req, res) {
         {
             $set: {
                 name: req.body.name,
-                phonenumber: req.body.phonenumber
+                phoneNumber: req.body.phoneNumber
             }
         },
         { upsert: true },
@@ -152,12 +152,11 @@ api.get('/tasks', (req, res) => {
 api.post('/tasks', function (req, res) {
     var newTask = new Task();
 
-    newTask.name = req.body.name;
     newTask.description = req.body.description;
-    newTask.assignedresident = req.body.assignedresident;
-    newTask.isdone = req.body.isdone;
-    newTask.startdate = new Date(parseInt(req.body.startdate));
-    newTask.enddate = new Date(parseInt(req.body.enddate));
+    newTask.assignedResident = req.body.assignedResident;
+    newTask.isDone = req.body.isDone;
+    newTask.startDate = new Date(parseInt(req.body.startDate));
+    newTask.endDate = new Date(parseInt(req.body.endDate));
 
     newTask.save(function (err, task) {
         if (err) {
@@ -177,12 +176,11 @@ api.put('/tasks/:id', function (req, res) {
     },
         {
             $set: {
-                name: req.body.name,
                 description: req.body.description,
-                assignedresident: req.body.assignedresident,
-                isdone: req.body.isdone,
-                startdate: req.body.startdate,
-                enddate: req.body.enddate
+                assignedResident: req.body.assignedResident,
+                isDone: req.body.isDone,
+                startDate: req.body.startDate,
+                endDate: req.body.endDate
             }
         },
         { upsert: true },

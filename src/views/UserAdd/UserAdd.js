@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UserAdd = () => {
-//example of function to add a resident (linked to the "add resident" button)
+  //example of function to add a resident (linked to the "add resident" button)
   const addResidentEvent = values => {
     console.log(values.residentName);
     // allow json
@@ -25,7 +25,7 @@ const UserAdd = () => {
       phoneNumber: values.phoneNumber
     });
     // promise
-    fetch('api/residents', {
+    fetch('http://localhost:3000/api/residents', {
       method: 'POST',
       body,
       headers
@@ -40,9 +40,9 @@ const UserAdd = () => {
   };
   const classes = useStyles();
   return (<div className={classes.root}>
-    <UsersToolbar/>
+    <UsersToolbar />
     <div style={{ padding: 15 }}>
-      <UserAddForm onSubmit={addResidentEvent}/>
+      <UserAddForm onSubmit={addResidentEvent} />
     </div>
   </div>);
 };
