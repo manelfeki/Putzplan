@@ -8,7 +8,10 @@ import { Button, colors } from '@material-ui/core';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Card from '@material-ui/core/Card';
+import { connect } from 'react-redux';
 import CardActions from '@material-ui/core/CardActions';
+import SelectField from '@material-ui/core/Select';
+import { getResidents } from '../../../../common/actions';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -48,14 +51,53 @@ const renderTextField = (
   />
 );
 
+const renderSelectField = (
+  { input, label, meta: { touched, error }, children, options, ...custom }
+) => (
+  <SelectField
+    label={label}
+    helperText={touched && error}
+    {...input}
+    onChange={(event, index, value) => input.onChange(value)}
+    children={children}
+    options={options}
+    {...custom}
+  />
+);
 
-const UserAddForm = props => {
+const formatResidentForSelect = resident => ({
+  label: resident.name,
+  value: resident.id
+});
+
+/*const mapStateToProps = (state, ownProps) => {
+  let initialValues = {};
+
+  if (state.resident) {
+    initialValues.assignedResident = formatResidentForSelect(state.resident);
+  }
+
+  return {
+    initialValues
+  };
+};*/
+
+const mapDispatchToProps = dispatch =>{
+  dispatch(getResidents())
+};
+/*
+const mapStateToProps = state => ({
+  state
+});
+*/
+
+const TaskAddForm = props => {
   const classes = useStyles();
   const { handleSubmit, pristine, reset, submitting } = props;
   return (
     <Card className={classes.card}>
       <CardHeader
-        title="Add a new resident"
+        title="Add a new task"
       />
       <CardContent>
         <form className={classes.root} onSubmit={handleSubmit}>
@@ -63,20 +105,32 @@ const UserAddForm = props => {
             <ThemeProvider theme={theme}>
               <Field
                 className={classes.margin}
-                name="residentName"
+                name="description"
                 component={renderTextField}
-                label="Resident Name"
+                label="Task Description"
                 variant="outlined"
+                multiline={true}
+                rows={2}
               />
             </ThemeProvider>
           </div>
           <div>
             <ThemeProvider theme={theme}>
               <Field
+                name="assignedResident"
+                component={renderSelectField}
+                label="Resident"
+              >
+              </Field>
+            </ThemeProvider>
+          </div>
+          <div>
+            <ThemeProvider theme={theme}>
+              <Field
                 className={classes.margin}
-                name="phoneNumber"
+                name="residentName"
                 component={renderTextField}
-                label="Phone Number"
+                label="Resident Name"
                 variant="outlined"
               />
             </ThemeProvider>
@@ -104,9 +158,12 @@ const UserAddForm = props => {
   );
 };
 
-export default reduxForm({
-  form: 'UserAddForm', // a unique identifier for this form
-  validate
-})(UserAddForm);
+const ReduxTaskAddForm = reduxForm({
+  form: 'TaskAddForm', // a unique identifier for this form
+  validate,
+  enableReinitialize: true
+})(TaskAddForm);
+
+export default connect(null,mapDispatchToProps)(ReduxTaskAddForm);
 
 

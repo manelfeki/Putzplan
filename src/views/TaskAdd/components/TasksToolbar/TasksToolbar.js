@@ -2,10 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
-import { Button } from '@material-ui/core';
-
-import { SearchInput } from 'components';
-import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -40,21 +36,11 @@ const TasksToolbar = props => {
       className={clsx(classes.root, className)}
     >
       <div className={classes.row}>
-        <span className={classes.spacer} />
-        <Link to="/tasks/add">
-          <Button
-            color="primary"
-            variant="contained"
-          >
-            Add task
-          </Button>
-        </Link>
+        <span className={classes.spacer}/>
+
       </div>
       <div className={classes.row}>
-        <SearchInput
-          className={classes.searchInput}
-          placeholder="Search task"
-        />
+
       </div>
     </div>
   );
