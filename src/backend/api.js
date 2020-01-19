@@ -5,6 +5,8 @@ const app = express();
 var db = 'mongodb://localhost/test';
 var Resident = require('./Resident');
 var Task = require('./Task');
+var cors = require('cors');
+
 
 const api = express.Router();
 
@@ -222,6 +224,11 @@ api.get('/residentandhistasks/:id', function (req, res) {
         }
     })
 })
-
+app.use(cors());
 app.use('/api', api);
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 app.listen(8080);

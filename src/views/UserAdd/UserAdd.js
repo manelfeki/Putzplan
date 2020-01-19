@@ -25,7 +25,7 @@ const UserAdd = () => {
       phoneNumber: values.phoneNumber
     });
     // promise
-    fetch('http://localhost:3000/api/residents', {
+    fetch('http://localhost:8080/api/residents', {
       method: 'POST',
       body,
       headers

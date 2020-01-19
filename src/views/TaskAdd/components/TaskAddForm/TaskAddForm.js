@@ -70,26 +70,21 @@ const formatResidentForSelect = resident => ({
   value: resident.id
 });
 
-/*const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state, ownProps) => {
   let initialValues = {};
 
-  if (state.resident) {
-    initialValues.assignedResident = formatResidentForSelect(state.resident);
+  if (state.news) {
+    initialValues.assignedResident = formatResidentForSelect(state.news);
   }
 
   return {
     initialValues
   };
-};*/
+};
 
 const mapDispatchToProps = dispatch =>{
   dispatch(getResidents())
 };
-/*
-const mapStateToProps = state => ({
-  state
-});
-*/
 
 const TaskAddForm = props => {
   const classes = useStyles();
@@ -164,6 +159,6 @@ const ReduxTaskAddForm = reduxForm({
   enableReinitialize: true
 })(TaskAddForm);
 
-export default connect(null,mapDispatchToProps)(ReduxTaskAddForm);
+export default connect(mapStateToProps,mapDispatchToProps)(ReduxTaskAddForm);
 
 

@@ -10,11 +10,12 @@ function* fetchResidents() {
   headers.append('Accept', 'application/json');
   headers.append('Content-Type', 'application/json');
 
-  const json = yield fetch('http://localhost:3000/api/residents', {
+  const json = yield fetch('http://localhost:8080/api/residents', {
     method: 'GET',
     headers})
     .then(response => response.json(), );
-  yield put({ type: "NEWS_RECEIVED", json: json.residents, });
+  console.log(json);
+  yield put({ type: "RESIDENTS_RECEIVED", json: json, });
 }
 
 export  function* saga() {
