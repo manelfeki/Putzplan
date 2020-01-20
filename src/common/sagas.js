@@ -14,6 +14,7 @@ function* fetchResidents() {
     method: 'GET',
     headers})
     .then(response => response.json(), );
+  console.log('this is the json');
   console.log(json);
   yield put({ type: "RESIDENTS_RECEIVED", json: json, });
 }

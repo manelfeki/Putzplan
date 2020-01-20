@@ -10,13 +10,11 @@ const reducer = combineReducers({
 });
 const sagaMiddleware = createSagaMiddleware();
 
-//const initialState = { counter: { count:0 } };
 const store = compose(
   applyMiddleware(sagaMiddleware),
   window.devToolsExtension && window.devToolsExtension(),
 )(createStore)(reducer);
 sagaMiddleware.run(saga);
 
-//store.dispatch(requestGetResidents());
 
 export default store;

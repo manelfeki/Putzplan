@@ -4,7 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import validate from './validate';
 import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
-import { Button, colors } from '@material-ui/core';
+import { Button, colors, Select } from '@material-ui/core';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Card from '@material-ui/core/Card';
@@ -12,17 +12,18 @@ import { connect } from 'react-redux';
 import CardActions from '@material-ui/core/CardActions';
 import SelectField from '@material-ui/core/Select';
 import { getResidents } from '../../../../common/actions';
-
+import { options } from '../../../Dashboard/components/LatestSales/chart';
+import {renderSelectField} from '../renderSelectField'
+import MenuItem from '@material-ui/core/MenuItem';
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
     width: '50%',
-    margin: 'auto',
-    padding: '10px'
   },
   margin: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
+    width: '200%'
   },
   card: {
     width: '50%',
@@ -51,37 +52,29 @@ const renderTextField = (
   />
 );
 
-const renderSelectField = (
-  { input, label, meta: { touched, error }, children, options, ...custom }
-) => (
-  <SelectField
-    label={label}
-    helperText={touched && error}
-    {...input}
-    onChange={(event, index, value) => input.onChange(value)}
-    children={children}
-    options={options}
-    {...custom}
-  />
-);
+
 
 const formatResidentForSelect = resident => ({
-  label: resident.name,
-  value: resident.id
+  label: resident.phoneNumber,
+  value: resident.name
 });
 
+
 const mapStateToProps = (state, ownProps) => {
-  let initialValues = {};
 
-  if (state.news) {
-    initialValues.assignedResident = formatResidentForSelect(state.news);
+  let initial = [];
+  console.log(state.rootReducer.residents);
+  if (state.rootReducer.residents) {
+    state.rootReducer.residents.map(function(item, i){initial.push(formatResidentForSelect(item)); })
   }
-
+  ownProps.options=initial;
   return {
-    initialValues
+   initialValues:{
+     description:'hi',
+     assignedResident:initial
+   }
   };
 };
-
 const mapDispatchToProps = dispatch =>{
   dispatch(getResidents())
 };
@@ -112,10 +105,14 @@ const TaskAddForm = props => {
           <div>
             <ThemeProvider theme={theme}>
               <Field
+                label="Resident"
                 name="assignedResident"
                 component={renderSelectField}
-                label="Resident"
+                options={options}
+                fullWidth
+                className={classes.margin}
               >
+
               </Field>
             </ThemeProvider>
           </div>
@@ -158,6 +155,7 @@ const ReduxTaskAddForm = reduxForm({
   validate,
   enableReinitialize: true
 })(TaskAddForm);
+
 
 export default connect(mapStateToProps,mapDispatchToProps)(ReduxTaskAddForm);
 
