@@ -1,8 +1,8 @@
-import { combineReducers, createStore, applyMiddleware, compose  } from 'redux';
+import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import { reducer as reduxFormReducer } from 'redux-form';
 import createSagaMiddleware from 'redux-saga'
 import { saga } from './common/sagas'
-import {rootReducer} from './common/rootReducer'
+import { rootReducer } from './common/rootReducer'
 
 const reducer = combineReducers({
   form: reduxFormReducer, // mounted under "form"

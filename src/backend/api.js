@@ -132,7 +132,7 @@ api.delete('/residents/:id', function (req, res) {
             res.status(500).end(JSON.stringify({ err: "error deleting resident" }));
         } else {
             //console.log(resident);
-            res.status(204);
+            res.status(204).end();
         }
     })
 })

@@ -12,6 +12,9 @@ export const setAssignedResident = resident => ({ type: "REQUEST_SET_ASSIGNED_RE
 export const REQUEST_SET_OCCURENCE = 'REQUEST_SET_OCCURENCE';
 export const setOccurenceTask = occurence => ({ type: "REQUEST_SET_OCCURENCE", payload: occurence });
 
+export const DELETE_RESIDENT = 'DELETE_RESIDENT';
+export const deleteResident = _id => ({ type: "DELETE_RESIDENT", payload: _id })
+
 // tasks
 export const SET_TASKS = 'SET_TASKS';
 export const setTasks = tasks => ({ type: SET_TASKS, payload: tasks });
