@@ -190,6 +190,8 @@ api.post('/tasks', function (req, res) {
     newTask.startDate = new Date(parseInt(req.body.startDate));
     newTask.endDate = new Date(parseInt(req.body.endDate));
     newTask.isRepeating = req.body.isRepeating;
+    newTask.taskStatus = req.body.taskStatus;
+    newTask.occurence = req.body.occurence;
     //newTask.assignedResidents = req.body.assignedResidents;
     Resident.find({}, (err, residents) => {
         if (err) {
@@ -237,6 +239,8 @@ api.put('/tasks/:id', function (req, res) {
                     startDate: req.body.startDate,
                     endDate: req.body.endDate,
                     isRepeating: req.body.isRepeating,
+                    taskStatus: req.body.taskStatus,
+                    occurence: req.body.occurence,
                     index: new_index
                 }, (err, raw) => {
                     res.status(200).json(task);

@@ -26,6 +26,12 @@ const TaskSchema = new Schema({
         type: Number,
         default: 0
     },
+    taskStatus: {
+        type: String
+    },
+    occurence: {
+        type: Number
+    }
 
 });
 
