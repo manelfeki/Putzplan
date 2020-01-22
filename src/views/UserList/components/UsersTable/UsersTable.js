@@ -18,6 +18,8 @@ import {
   TablePagination
 } from '@material-ui/core';
 
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+
 import { getInitials } from 'helpers';
 import { deleteResident } from '../../../../common/actions';
 
@@ -147,6 +149,7 @@ const UsersTable = props => {
                         <Avatar
                           className={classes.avatar}
                           src={user.avatarUrl}
+                          style={{color:'red'}}
                         >
                           {getInitials(user.name)}
                         </Avatar>
@@ -157,7 +160,7 @@ const UsersTable = props => {
                     <TableCell style={{ color: "red", fontSize: "2em", cursor: "pointer" }} onClick={() => {
                       dispatch(deleteResident(user.id));
                       window.location.reload();
-                    }}>🗑</TableCell>
+                    }}><DeleteOutlineIcon/></TableCell>
                   </TableRow>
                 ))}
               </TableBody>

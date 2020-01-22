@@ -184,7 +184,6 @@ const TaskAddForm = props => {
                 className={classes.margin}
                 onClick={handleClickResident}
                 value={choosedResident}
-                disabled={!isChecked}
               >
 
               </Field>
