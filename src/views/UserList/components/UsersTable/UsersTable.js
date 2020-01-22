@@ -121,6 +121,7 @@ const UsersTable = props => {
                   <TableCell>Name</TableCell>
 
                   <TableCell>Phone Number</TableCell>
+                  <TableCell>Delete Resident</TableCell>
 
                 </TableRow>
               </TableHead>
@@ -132,9 +133,7 @@ const UsersTable = props => {
                     key={user.id}
                     selected={selectedUsers.indexOf(user.id) !== -1}
                   >
-                    <TableCell style={{ color: "red", fontSize: "2em", cursor: "pointer" }} onClick={() => {
-                      dispatch(deleteResident(user.id))
-                    }}>🗑</TableCell>
+                   <TableCell/>
                     <TableCell padding="checkbox">
                       <Checkbox
                         checked={selectedUsers.indexOf(user.id) !== -1}
@@ -155,6 +154,10 @@ const UsersTable = props => {
                       </div>
                     </TableCell>
                     <TableCell>{user.phone}</TableCell>
+                    <TableCell style={{ color: "red", fontSize: "2em", cursor: "pointer" }} onClick={() => {
+                      dispatch(deleteResident(user.id));
+                      window.location.reload();
+                    }}>🗑</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

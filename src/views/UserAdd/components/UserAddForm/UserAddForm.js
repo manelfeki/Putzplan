@@ -86,7 +86,7 @@ const UserAddForm = props => {
               <ThemeProvider theme={theme}>
                 <Button variant="contained" color="secondary" className={classes.margin}
                         disabled={pristine || submitting}
-                        type="submit">
+                        type="submit" >
                   Submit
                 </Button>
               </ThemeProvider>

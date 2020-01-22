@@ -37,6 +37,7 @@ const UserAdd = () => {
         throw new Error(await res.json());
       }
     }).catch(err => console.log(err));
+    window.location.href='/users'
   };
   const classes = useStyles();
   return (<div className={classes.root}>
