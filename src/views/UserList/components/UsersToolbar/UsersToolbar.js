@@ -40,7 +40,7 @@ const UsersToolbar = props => {
     >
       <div className={classes.row}>
         <span className={classes.spacer} />
-        <Button className={classes.importButton}>Delete resident</Button>
+
         <Link to="/users/add">
           <Button
             color="primary"
