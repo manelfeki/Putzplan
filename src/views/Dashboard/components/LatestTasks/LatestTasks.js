@@ -1,47 +1,81 @@
-import React, { useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 import { makeStyles } from '@material-ui/styles';
 import {
   Card,
+  CardActions,
   CardHeader,
   CardContent,
-  CardActions,
   Button,
   Divider,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  IconButton
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Tooltip,
+  TableSortLabel
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import mockData from './data';
-
-const useStyles = makeStyles(() => ({
-  root: {
-    height: '100%'
-  },
+import { StatusBullet } from 'components';
+import { connect } from 'react-redux';
+import { getTasks } from '../../../../common/actions';
+const useStyles = makeStyles(theme => ({
+  root: {},
   content: {
     padding: 0
   },
-  image: {
-    height: 48,
-    width: 48
+  inner: {
+    minWidth: 800
+  },
+  statusContainer: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  status: {
+    marginRight: theme.spacing(1)
   },
   actions: {
     justifyContent: 'flex-end'
   }
 }));
 
+const statusColors = {
+  done: 'success',
+  waiting: 'info',
+  expired: 'danger'
+};
+
+const mapStateToProps = (state, ownProps) => {
+  let initial = [];
+  if (state.rootReducer.tasks) {
+    initial = state.rootReducer.tasks.map(
+      resident => {
+        return {
+          id: resident._id,
+          name: resident.name,
+          phone: resident.phoneNumber,
+        };
+      }
+    )
+  }
+  ownProps.options=initial;
+  return {
+    initialValues:{
+    }
+  };
+};
+const mapDispatchToProps = dispatch =>{
+  dispatch(getTasks())
+};
+
 const LatestTasks = props => {
   const { className, ...rest } = props;
-
+  const tasks = props.options;
   const classes = useStyles();
-
-  const [tasks] = useState(mockData);
 
   return (
     <Card
@@ -49,37 +83,67 @@ const LatestTasks = props => {
       className={clsx(classes.root, className)}
     >
       <CardHeader
-        subtitle={`${tasks.length} in total`}
-        title="Latest tasks"
+        action={
+          <Button
+            color="primary"
+            size="small"
+            variant="outlined"
+          >
+            New entry
+          </Button>
+        }
+        title="Latest Tasks"
       />
       <Divider />
       <CardContent className={classes.content}>
-        <List>
-          {tasks.map((task, i) => (
-            <ListItem
-              divider={i < tasks.length - 1}
-              key={task.id}
-            >
-              <ListItemAvatar>
-                <img
-                  alt="task"
-                  className={classes.image}
-                  src={task.imageUrl}
-                />
-              </ListItemAvatar>
-              <ListItemText
-                primary={task.name}
-                secondary={`Updated ${task.updatedAt.fromNow()}`}
-              />
-              <IconButton
-                edge="end"
-                size="small"
-              >
-                <MoreVertIcon />
-              </IconButton>
-            </ListItem>
-          ))}
-        </List>
+        <PerfectScrollbar>
+          <div className={classes.inner}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Task</TableCell>
+                  <TableCell sortDirection="desc">
+                    <Tooltip
+                      enterDelay={300}
+                      title="Sort"
+                    >
+                      <TableSortLabel
+                        active
+                        direction="desc"
+                      >
+                        Date
+                      </TableSortLabel>
+                    </Tooltip>
+                  </TableCell>
+                  <TableCell>Status</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {tasks.map(task => (
+                  <TableRow
+                    hover
+                    key={task.id}
+                  >
+                    <TableCell>{task.description}</TableCell>
+                    <TableCell>
+                      {task.startDate.format('DD/MM/YYYY')}
+                    </TableCell>
+                    <TableCell>
+                      <div className={classes.statusContainer}>
+                        <StatusBullet
+                          className={classes.status}
+                          color={statusColors[task.status]}
+                          size="sm"
+                        />
+                        {task.status}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </PerfectScrollbar>
       </CardContent>
       <Divider />
       <CardActions className={classes.actions}>
@@ -95,8 +159,5 @@ const LatestTasks = props => {
   );
 };
 
-LatestTasks.propTypes = {
-  className: PropTypes.string
-};
 
-export default LatestTasks;
+export default connect(mapStateToProps,mapDispatchToProps)(LatestTasks);

@@ -16,7 +16,6 @@ function* fetchResidents() {
 }
 
 function* fetchTasks() {
-  console.log('Hello Sagas!');
   // allow json
   let headers = new Headers();
   headers.append('Accept', 'application/json');
@@ -26,8 +25,6 @@ function* fetchTasks() {
     method: 'GET',
     headers})
     .then(response => response.json(), );
-  console.log('this is the json');
-  console.log(json);
   yield put({ type: "TASKS_RECEIVED", json: json, });
 }
 function* setAssignedResident({payload}) {
