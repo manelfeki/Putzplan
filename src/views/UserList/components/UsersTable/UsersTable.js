@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { makeStyles } from '@material-ui/styles';
+import { useDispatch } from 'react-redux';
 import {
   Card,
   CardActions,
@@ -20,6 +21,7 @@ import {
 } from '@material-ui/core';
 
 import { getInitials } from 'helpers';
+import { deleteResident } from '../../../../common/actions';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -92,6 +94,8 @@ const UsersTable = props => {
     setRowsPerPage(event.target.value);
   };
 
+  const dispatch = useDispatch();
+
   return (
     <Card
       {...rest}
@@ -103,6 +107,7 @@ const UsersTable = props => {
             <Table>
               <TableHead>
                 <TableRow>
+                  <TableCell padding="checkbox"></TableCell>
                   <TableCell padding="checkbox">
                     <Checkbox
                       checked={selectedUsers.length === users.length}
@@ -128,6 +133,9 @@ const UsersTable = props => {
                     key={user.id}
                     selected={selectedUsers.indexOf(user.id) !== -1}
                   >
+                    <TableCell style={{ color: "red", fontSize: "2em", cursor: "pointer" }} onClick={() => {
+                      dispatch(deleteResident(user.id))
+                    }}>🗑</TableCell>
                     <TableCell padding="checkbox">
                       <Checkbox
                         checked={selectedUsers.indexOf(user.id) !== -1}
@@ -155,7 +163,7 @@ const UsersTable = props => {
           </div>
         </PerfectScrollbar>
       </CardContent>
-    </Card>
+    </Card >
   );
 };
 

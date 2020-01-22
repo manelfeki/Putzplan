@@ -40,6 +40,14 @@ function* setOccurenceTask({ payload }) {
   yield put({ type: "SET_OCCURENCE_TASK", occurence: payload, });
 }
 
+function* deleteResident({ payload }) {
+  yield fetch(`http://localhost:8080/api/residents/${payload}`,
+    {
+      method: 'DELETE'
+    });
+  yield put({ type: "RESIDENT_DELETED", id: payload });
+}
+
 export function* saga() {
   yield takeLatest(REQUEST_GET_RESIDENTS, fetchResidents);
   yield takeLatest(REQUEST_GET_TASKS, fetchTasks);
