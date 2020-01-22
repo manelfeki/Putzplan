@@ -20,7 +20,7 @@ async function getResidentByName(name)
   let response = await fetch(`http://localhost:8080/api/residents/${name}`, {
     method: 'GET',
     headers});
-  let resident = await response.json();
+  let resident = await response.text();
   return resident;
 }
 
@@ -29,7 +29,9 @@ const TaskAdd = () => {
     console.log("heyyy");
     console.log(values);
     console.log(store.getState().rootReducer.assignedResidentName);
-    const resident=getResidentByName(store.getState().rootReducer.assignedResidentName);
+    const  resident= getResidentByName(store.getState().rootReducer.assignedResidentName).then(data => {
+      console.log(data);
+    });
     // allow json
     let headers = new Headers();
     headers.append('Accept', 'application/json');
