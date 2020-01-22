@@ -37,15 +37,31 @@ api.get('/residents', (req, res) => {
         })
 })
 
-//get one resident
-api.get('/residents/:id', (req, res) => {
+// //get one resident by id
+// api.get('/residents/:id', (req, res) => {
 
+//     Resident.findOne({
+//         _id: req.params.id
+//     })
+//         .exec(function (err, resident) {
+//             if (err) {
+//                 res.send('error has occured while getting a resident by id');
+//             } else {
+
+//                 res.json(resident);
+//             }
+//         })
+// })
+
+//get one resident by phonenumber
+api.get('/residents/:pn', (req, res) => {
     Resident.findOne({
-        _id: req.params.id
+        phoneNumber: req.params.pn
     })
         .exec(function (err, resident) {
             if (err) {
-                res.send('error has occured while getting a resident');
+
+                res.send('error has occured while getting a resident:');
             } else {
 
                 res.json(resident);
@@ -110,6 +126,13 @@ api.delete('/residents/:id', function (req, res) {
     })
 })
 
+//delete all residents
+api.get('/cleanresidents', function (req, res) {
+    Resident.deleteMany(function (err) {
+        if (err) console.log(err);
+    });
+    res.end();
+})
 
 //--------------------------------------------------------------------------------------------
 
@@ -284,6 +307,8 @@ api.get('/cleantasks', function (req, res) {
     });
     res.end();
 })
+
+
 
 
 app.use(cors());
