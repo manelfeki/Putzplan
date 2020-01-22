@@ -7,6 +7,8 @@ export const rootReducer = (state = {residents: [{name:'manel', phoneNumber:'235
       return { ...state, assignedResidentName: action.residentName };
     case 'SET_OCCURENCE_TASK':
       return { ...state, taskOccurence: action.occurence };
+    case 'TASKS_RECEIVED':
+      return { ...state, tasks: action.json };
     default:
       return state;
   }

@@ -53,10 +53,10 @@ api.get('/residents', (req, res) => {
 //         })
 // })
 
-//get one resident by phonenumber
-api.get('/residents/:pn', (req, res) => {
+//get one resident by name
+api.get('/residents/:name', (req, res) => {
     Resident.findOne({
-        phoneNumber: req.params.pn
+        name: req.params.name
     })
         .exec(function (err, resident) {
             if (err) {

@@ -12,19 +12,34 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+async function getResidentByName(name)
+{
+  let headers = new Headers();
+  headers.append('Accept', 'application/json');
+  headers.append('Content-Type', 'application/json');
+  let response = await fetch(`http://localhost:8080/api/residents/${name}`, {
+    method: 'GET',
+    headers});
+  let resident = await response.json();
+  return resident;
+}
+
 const TaskAdd = () => {
   const addTaskEvent = values => {
+    console.log("heyyy");
     console.log(values);
-    console.log(store.getState());
+    console.log(store.getState().rootReducer.assignedResidentName);
+    const resident=getResidentByName(store.getState().rootReducer.assignedResidentName);
     // allow json
     let headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-Type', 'application/json');
 
+
     // need to stringify the data before sending it
     let body = JSON.stringify({
       description: values.description,
-      assignedResident: store.getState().rootReducer.assignedResidentName,
+      assignedResident: resident,
       startDate: new Date(values.dateStart),
       endDate: new Date(values.dateEnd),
       isRepeating: values.repetitive,

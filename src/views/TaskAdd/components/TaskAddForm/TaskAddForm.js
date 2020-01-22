@@ -207,7 +207,6 @@ const TaskAddForm = props => {
                 <Button variant="contained" color="secondary" className={classes.margin}
                         disabled={pristine || submitting}
                         type="submit"
-
                 >
                   Submit
                 </Button>
