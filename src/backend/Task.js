@@ -26,9 +26,11 @@ const TaskSchema = new Schema({
         type: Number,
         default: 0
     },
-    //in repeatable task : contains all the assigned residents
-    assignedResidents: {
-        type: [mongoose.Schema.Types.ObjectId]
+    taskStatus: {
+        type: String
+    },
+    occurence: {
+        type: Number
     }
 
 });

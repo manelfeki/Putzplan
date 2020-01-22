@@ -13,7 +13,6 @@ import {
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
 
 const schema = {
   email: {
@@ -256,7 +255,6 @@ const SignIn = props => {
                       size="large"
                       variant="contained"
                     >
-                      <FacebookIcon className={classes.socialIcon} />
                       Login with Facebook
                     </Button>
                   </Grid>
@@ -266,7 +264,6 @@ const SignIn = props => {
                       size="large"
                       variant="contained"
                     >
-                      <GoogleIcon className={classes.socialIcon} />
                       Login with Google
                     </Button>
                   </Grid>

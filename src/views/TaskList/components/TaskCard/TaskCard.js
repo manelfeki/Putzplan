@@ -51,7 +51,7 @@ const TaskCard = props => {
     >
       <CardContent>
         <div className={classes.imageContainer}>
-          <AccessTimeIcon className={classes.AccessTimeIcon}/>
+          <DoneIcon className={classes.doneIcon} />
         </div>
         <Typography
           align="center"
@@ -61,7 +61,7 @@ const TaskCard = props => {
           {task.title}
         </Typography>
       </CardContent>
-      <Divider/>
+      <Divider />
       <CardActions>
         <Grid
           container
@@ -71,7 +71,7 @@ const TaskCard = props => {
             className={classes.statsItem}
             item
           >
-            <AccessTimeIcon className={classes.acc}/>
+            <AccessTimeIcon className={classes.statsIcon} />
             <Typography
               display="inline"
               variant="body2"

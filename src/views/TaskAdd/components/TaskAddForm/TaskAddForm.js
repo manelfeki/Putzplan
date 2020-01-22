@@ -52,18 +52,18 @@ const theme = createMuiTheme({
 const renderTextField = (
   { input, label, meta: { touched, error }, ...custom }
 ) => (
-  <TextField
-    label={label}
-    helperText={touched && error}
-    {...input}
-    {...custom}
-  />
-);
+    <TextField
+      label={label}
+      helperText={touched && error}
+      {...input}
+      {...custom}
+    />
+  );
 
 
 const renderCheckbox = ({ input, label }) => (
   <Switch label={label}
-          onChange={input.onChange}
+    onChange={input.onChange}
   />
 );
 
@@ -79,22 +79,22 @@ const mapStateToProps = (state, ownProps) => {
   let initial = [];
   console.log(state.rootReducer.residents);
   if (state.rootReducer.residents) {
-    state.rootReducer.residents.map(function(item, i){initial.push(formatResidentForSelect(item)); })
+    state.rootReducer.residents.map(function (item, i) { initial.push(formatResidentForSelect(item)); })
   }
-  ownProps.options=initial;
+  ownProps.options = initial;
   console.log('mmm', ownProps.options);
   const isChecked = !selector(state, 'repetitive');
   return {
-   initialValues:{
-     description: '',
-     occurence: '',
-     assignedResident: initial,
-     dateStart: '',
-     dateEnd: '',
-     repetitive: 'true',
-     isChecked: '',
-     choosedResident: ''
-   }, isChecked
+    initialValues: {
+      description: '',
+      occurence: '',
+      assignedResident: initial,
+      dateStart: '',
+      dateEnd: '',
+      repetitive: 'true',
+      isChecked: '',
+      choosedResident: ''
+    }, isChecked
   };
 };
 const mapDispatchToProps = (dispatch) => ({
@@ -168,6 +168,7 @@ const TaskAddForm = props => {
                 options={options}
                 onBlur={setAssignedResident}
                 component={CustomSelect}
+                disabled={isChecked}
               >
               </Field>
 
@@ -205,15 +206,15 @@ const TaskAddForm = props => {
             <CardActions disableSpacing>
               <ThemeProvider theme={theme}>
                 <Button variant="contained" color="secondary" className={classes.margin}
-                        disabled={pristine || submitting}
-                        type="submit"
+                  disabled={pristine || submitting}
+                  type="submit"
                 >
                   Submit
                 </Button>
               </ThemeProvider>
               <ThemeProvider theme={theme}>
                 <Button variant="contained" color="link" className={classes.margin} disabled={pristine || submitting}
-                        type="button" onClick={reset}>
+                  type="button" onClick={reset}>
                   Clear
                 </Button>
               </ThemeProvider>
@@ -232,6 +233,6 @@ const ReduxTaskAddForm = reduxForm({
 })(TaskAddForm);
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(ReduxTaskAddForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ReduxTaskAddForm);
 
 
