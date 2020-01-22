@@ -1,5 +1,5 @@
 
-export const rootReducer = (state = {residents: [{name:'manel', phoneNumber:'235'}], assignedResidentName:'', taskOccurence:''}, action) => {
+export const rootReducer = (state = { residents: [{ name: 'manel', phoneNumber: '235' }], assignedResidentName: '', taskOccurence: '' }, action) => {
   switch (action.type) {
     case 'RESIDENTS_RECEIVED':
       return { ...state, residents: action.json };
