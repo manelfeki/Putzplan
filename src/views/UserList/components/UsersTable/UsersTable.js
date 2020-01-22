@@ -115,9 +115,9 @@ const UsersTable = props => {
                     />
                   </TableCell>
                   <TableCell>Name</TableCell>
-                  <TableCell>Surname</TableCell>
+
                   <TableCell>Phone</TableCell>
-                  <TableCell>Coming date</TableCell>
+
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -147,11 +147,7 @@ const UsersTable = props => {
                         <Typography variant="body1">{user.name}</Typography>
                       </div>
                     </TableCell>
-                    <TableCell>{user.email}</TableCell>
                     <TableCell>{user.phone}</TableCell>
-                    <TableCell>
-                      {moment(user.createdAt).format('DD/MM/YYYY')}
-                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
