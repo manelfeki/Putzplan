@@ -24,6 +24,23 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+
+// async function getResidentById(residentId)
+// {
+//   let headers = new Headers();
+//   headers.append('Accept', 'application/json');
+//   headers.append('Content-Type', 'application/json');
+//   let response = await fetch(`http://localhost:8080/api/residents/${residentId}`, {
+//     method: 'GET',
+//     headers});
+//   let residentName = await response.text();
+//   console.log(residentName);
+//   return residentName;
+// }
+
+
+
+
 const mapStateToProps = (state, ownProps) => {
   let initial = [];
   console.log(state.rootReducer.tasks);

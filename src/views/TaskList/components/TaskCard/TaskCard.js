@@ -6,6 +6,8 @@ import { Card, CardActions, CardContent, Divider, Grid, Typography } from '@mate
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import PeopleIcon from '@material-ui/icons/EmojiPeople';
 import DoneIcon from '@material-ui/icons/DoneOutline';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -49,7 +51,7 @@ const TaskCard = props => {
     >
       <CardContent>
         <div className={classes.imageContainer}>
-          <DoneIcon className={classes.doneIcon}/>
+          <AccessTimeIcon className={classes.AccessTimeIcon}/>
         </div>
         <Typography
           align="center"
@@ -69,7 +71,7 @@ const TaskCard = props => {
             className={classes.statsItem}
             item
           >
-            <AccessTimeIcon className={classes.statsIcon}/>
+            <AccessTimeIcon className={classes.acc}/>
             <Typography
               display="inline"
               variant="body2"
@@ -81,6 +83,21 @@ const TaskCard = props => {
             className={classes.statsItem}
             item
           >
+            <Typography
+              display="block"
+              variant="body3"
+            >
+              <Link to="/tasks/add">
+                <Button
+                  color="primary"
+                 variant="contained"
+          >
+                  EDIT
+                </Button>
+              </Link>
+            </Typography>
+
+            
             <PeopleIcon className={classes.statsIcon}/>
             <Typography
               display="inline"
