@@ -1,6 +1,6 @@
 import { takeLatest, put } from 'redux-saga/effects'
 import {
-  REQUEST_GET_RESIDENTS, REQUEST_SET_ASSIGNED_RESIDENT, REQUEST_SET_OCCURENCE, REQUEST_GET_TASKS
+  REQUEST_GET_RESIDENTS, REQUEST_SET_ASSIGNED_RESIDENT, REQUEST_SET_OCCURENCE, REQUEST_GET_TASKS, DELETE_RESIDENT
 } from './actions';
 
 function* fetchResidents() {
@@ -49,4 +49,5 @@ export function* saga() {
   yield takeLatest(REQUEST_GET_TASKS, fetchTasks);
   yield takeLatest(REQUEST_SET_ASSIGNED_RESIDENT, setAssignedResident);
   yield takeLatest(REQUEST_SET_OCCURENCE, setOccurenceTask);
+  yield takeLatest(DELETE_RESIDENT, deleteResident);
 }

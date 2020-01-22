@@ -9,7 +9,7 @@ export const rootReducer = (state = { residents: [], assignedResidentName: '', t
       return { ...state, taskOccurence: action.occurence };
     case 'RESIDENT_DELETED':
       const residents = state.residents.filter(resident => resident._id !== action.id);
-      return { ...state, residents }
+      return { ...state, residents };
     case 'TASKS_RECEIVED':
       return { ...state, tasks: action.json };
     default:
