@@ -49,7 +49,7 @@ const TaskCard = props => {
     >
       <CardContent>
         <div className={classes.imageContainer}>
-          <DoneIcon className={classes.doneIcon}/>
+          <DoneIcon className={classes.doneIcon} />
         </div>
         <Typography
           align="center"
@@ -59,7 +59,7 @@ const TaskCard = props => {
           {task.title}
         </Typography>
       </CardContent>
-      <Divider/>
+      <Divider />
       <CardActions>
         <Grid
           container
@@ -69,7 +69,7 @@ const TaskCard = props => {
             className={classes.statsItem}
             item
           >
-            <AccessTimeIcon className={classes.statsIcon}/>
+            <AccessTimeIcon className={classes.statsIcon} />
             <Typography
               display="inline"
               variant="body2"
@@ -81,7 +81,7 @@ const TaskCard = props => {
             className={classes.statsItem}
             item
           >
-            <PeopleIcon className={classes.statsIcon}/>
+            <PeopleIcon className={classes.statsIcon} />
             <Typography
               display="inline"
               variant="body2"
