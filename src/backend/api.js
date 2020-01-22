@@ -53,15 +53,26 @@ api.get('/residents', (req, res) => {
 //         })
 // })
 
-//get one resident by name
+//get one resident by name or id
 api.get('/residents/:name', (req, res) => {
     Resident.findOne({
         name: req.params.name
     })
         .exec(function (err, resident) {
-            if (err) {
-
-                res.send('error has occured while getting a resident');
+            if (err || !resident) {
+                //if not a name but an id 
+                Resident.findOne({
+                    _id: req.params.name
+                })
+                    .exec(function (err, residentid) {
+                        if (err || !residentid) {
+                            res.send('error has occured while getting a residentid:');
+                        } else {
+                            console.log
+                            res.json(residentid);
+                        }
+                    })
+                //if a name    
             } else {
 
                 res.json(resident);
