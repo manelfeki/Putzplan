@@ -5,6 +5,9 @@ import { ThemeProvider as MuiThemeProvider , createMuiTheme } from '@material-ui
 import store from './store';
 import * as serviceWorker from './serviceWorker';
 import App from './App';
+import { getResidents } from './common/actions';
+
+store.dispatch(getResidents());
 
 ReactDOM.render(
   <Provider store={store}>
