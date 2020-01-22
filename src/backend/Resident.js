@@ -16,7 +16,6 @@ const ResidentSchema = new Schema({
     // }
 });
 
-//const Resident = mongoose.model('resident', ResidentSchema);
 
 module.exports = mongoose.model('Resident', ResidentSchema);
 

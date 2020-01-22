@@ -120,7 +120,7 @@ const UsersTable = props => {
                   </TableCell>
                   <TableCell>Name</TableCell>
 
-                  <TableCell>Phone</TableCell>
+                  <TableCell>Phone Number</TableCell>
 
                 </TableRow>
               </TableHead>
