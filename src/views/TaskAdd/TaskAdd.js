@@ -37,8 +37,7 @@ const TaskAdd = () => {
         assignedResident: data,
         startDate: new Date(values.dateStart),
         endDate: new Date(values.dateEnd),
-        isRepeating: values.repetitive,
-        index: values.occurence
+        isRepeating: values.repetitive
       });
       // allow json
       let headers = new Headers();
