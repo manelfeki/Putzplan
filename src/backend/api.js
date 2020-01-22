@@ -185,26 +185,32 @@ api.get('/tasks', (req, res) => {
 
 //create task
 api.post('/tasks', function (req, res) {
-    if (req.body.assignedResidents && req.body.assignedResidents.length === 0) {
-        res.status(400).end(JSON.stringify({ err: "Not enougth assigned residents" }));
-        return;
-    }
-
     var newTask = new Task();
     newTask.description = req.body.description;
     newTask.startDate = new Date(parseInt(req.body.startDate));
     newTask.endDate = new Date(parseInt(req.body.endDate));
     newTask.isRepeating = req.body.isRepeating;
-    newTask.assignedResidents = req.body.assignedResidents;
-    newTask.assignedResident = newTask.assignedResidents[0];
-
-    newTask.save(function (err, task) {
+    //newTask.assignedResidents = req.body.assignedResidents;
+    Resident.find({}, (err, residents) => {
         if (err) {
-            res.status(400).end(JSON.stringify({ err: "error saving task" }));
-
-        } else {
-            res.end(JSON.stringify(task));
+            res.status(400).json({ err: "error" });
+            return;
         }
+
+        if (newTask.isRepeating) {
+            newTask.assignedResident = residents[0]._id;
+        } else {
+            newTask.assignedResident = req.body.assignedResident;
+        }
+
+        newTask.save(function (err, task) {
+            if (err) {
+                res.status(400).end(JSON.stringify({ err: "error saving task" }));
+
+            } else {
+                res.end(JSON.stringify(task));
+            }
+        })
     })
 })
 
@@ -214,31 +220,27 @@ api.put('/tasks/:id', function (req, res) {
     Task.findById(req.params.id, (err, task) => {
         if (err || !task) { res.status(400).end(JSON.stringify({ err: "error : task doesn't exist" })); }
         else {
-            let new_residents = task.toObject().assignedResidents;
+            Resident.find({}, (err, residents) => {
+                if (err) {
+                    res.status(400).json({ err: "error" });
+                    return;
+                }
 
-            //if no resident assigned to task
-            if (req.body.assignedResidents && req.body.assignedResidents.length === 0) {
-                res.status(400).end(JSON.stringify({ err: "No assigned residents" }));
-                return;
+                let new_index = task.index % residents.length;
+                let assignedResident = residents[new_index]._id;
 
-                //if resident(s) exists
-            } else if (req.body.assignedResidents) {
-                new_residents = req.body.assignedResidents;
-            }
-            //update the index depending on number of residents
-            let new_index = task.index % new_residents.length;
-            let assignedResident = new_residents[new_index];
+                //update the index depending on number of residents
 
-            task.update({
-                description: req.body.description,
-                assignedResident,
-                assignedResidents: new_residents,
-                startDate: req.body.startDate,
-                endDate: req.body.endDate,
-                isRepeating: req.body.isRepeating,
-                index: new_index
-            }, (err, raw) => {
-                res.status(200).json(task);
+                task.update({
+                    description: req.body.description,
+                    assignedResident,
+                    startDate: req.body.startDate,
+                    endDate: req.body.endDate,
+                    isRepeating: req.body.isRepeating,
+                    index: new_index
+                }, (err, raw) => {
+                    res.status(200).json(task);
+                });
             });
         }
     })
@@ -267,26 +269,32 @@ api.delete('/tasks/:id', function (req, res) {
                     - increment the date of 1 week 
                     */
                     else {
-                        let start_date = task.toObject().startDate;
-                        let end_date = task.toObject().endDate;
-                        let index = task.toObject().index;
-                        let residents = task.toObject().assignedResidents;
-                        let new_index = (index + 1) % residents.length;
-                        start_date.setHours(start_date.getHours() + 168);
-                        end_date.setHours(end_date.getHours() + 168)
-                        task.update(
-                            {
-                                $set: {
-                                    startDate: start_date,
-                                    endDate: end_date,
-                                    index: new_index,
-                                    assignedResident: residents[new_index]
-                                }
-                            }, (err, raw) => {
-                                if (err) console.log(err, task, raw);
+                        Resident.find({}, (err, residents) => {
+                            if (err) {
+                                res.status(400).json({ err: "error" });
+                                return;
                             }
-                        );
-                        res.status(204).end();
+
+                            let start_date = task.toObject().startDate;
+                            let end_date = task.toObject().endDate;
+                            let index = task.toObject().index;
+                            let new_index = (index + 1) % residents.length;
+                            start_date.setHours(start_date.getHours() + 168);
+                            end_date.setHours(end_date.getHours() + 168)
+                            task.update(
+                                {
+                                    $set: {
+                                        startDate: start_date,
+                                        endDate: end_date,
+                                        index: new_index,
+                                        assignedResident: residents[new_index]._id
+                                    }
+                                }, (err, raw) => {
+                                    if (err) console.log(err, task, raw);
+                                }
+                            );
+                            res.status(204).end();
+                        });
                     }
                 })
         }
@@ -312,7 +320,7 @@ api.get('/residentandhistasks/:id', function (req, res) {
 })
 
 //delete all tasks
-api.get('/cleantasks', function (req, res) {
+api.delete('/cleantasks', function (req, res) {
     Task.deleteMany(function (err) {
         if (err) console.log(err);
     });
