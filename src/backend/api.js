@@ -61,7 +61,7 @@ api.get('/residents/:name', (req, res) => {
         .exec(function (err, resident) {
             if (err) {
 
-                res.send('error has occured while getting a resident:');
+                res.send('error has occured while getting a resident');
             } else {
 
                 res.json(resident);
