@@ -22,11 +22,21 @@ function* fetchTasks() {
   headers.append('Accept', 'application/json');
   headers.append('Content-Type', 'application/json');
 
-  const json = yield fetch('http://localhost:8080/api/tasks', {
+  const tasks = yield fetch('http://localhost:8080/api/tasks', {
     method: 'GET',
     headers})
-    .then(response => response.json(), );
-  yield put({ type: "TASKS_RECEIVED", json: json, });
+    .then(response => response.json() );
+    const residents = yield fetch('http://localhost:8080/api/residents', {
+    method: 'GET',
+    headers})
+    .then(response => response.json() );
+    const mergedTasks = tasks.map(task => {
+      const id = task.assignedResident;
+      const resident = residents.find(resident => id === resident._id);
+      task.resident = resident;
+      return task;
+    })
+  yield put({ type: "TASKS_RECEIVED", json: mergedTasks, });
 }
 function* setAssignedResident({ payload }) {
   yield put({ type: "SET_RESIDENT", residentName: payload, });

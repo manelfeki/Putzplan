@@ -49,7 +49,7 @@ const mapStateToProps = (state, ownProps) => {
       task => {
         return {
           title: task.description,
-          name: task.assignedResident,
+          name: task.resident.name,
           updatedAt: task.endDate,
         };
       }
