@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { makeStyles } from '@material-ui/styles';
 import { useDispatch } from 'react-redux';
 import {
   Card,
-  CardActions,
   CardContent,
   Avatar,
   Checkbox,
@@ -24,7 +22,8 @@ import { getInitials } from 'helpers';
 import { deleteResident } from '../../../../common/actions';
 
 const useStyles = makeStyles(theme => ({
-  root: {},
+  root: {
+  },
   content: {
     padding: 0
   },

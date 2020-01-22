@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { getResidents } from '../../common/actions';
-import { Field, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import validate from '../TaskAdd/components/TaskAddForm/validate';
 import { connect } from 'react-redux';
 
-import { UsersToolbar, UsersTable } from './components';
+import { UsersTable, UsersToolbar } from './components';
 
 const useStyles = makeStyles(theme => ({
   root: {
