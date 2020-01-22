@@ -1,6 +1,6 @@
 import {takeLatest, put} from 'redux-saga/effects'
 import {
-  REQUEST_GET_RESIDENTS, REQUEST_SET_ASSIGNED_RESIDENT, REQUEST_SET_OCCURENCE
+  REQUEST_GET_RESIDENTS, REQUEST_SET_ASSIGNED_RESIDENT, REQUEST_SET_OCCURENCE, REQUEST_GET_TASKS
 } from './actions';
 
 function* fetchResidents() {
@@ -15,6 +15,21 @@ function* fetchResidents() {
   yield put({ type: "RESIDENTS_RECEIVED", json: json, });
 }
 
+function* fetchTasks() {
+  console.log('Hello Sagas!');
+  // allow json
+  let headers = new Headers();
+  headers.append('Accept', 'application/json');
+  headers.append('Content-Type', 'application/json');
+
+  const json = yield fetch('http://localhost:8080/api/tasks', {
+    method: 'GET',
+    headers})
+    .then(response => response.json(), );
+  console.log('this is the json');
+  console.log(json);
+  yield put({ type: "TASKS_RECEIVED", json: json, });
+}
 function* setAssignedResident({payload}) {
   yield put({ type: "SET_RESIDENT", residentName: payload, });
 }
@@ -25,6 +40,7 @@ function* setOccurenceTask({payload}) {
 
 export  function* saga() {
   yield takeLatest(REQUEST_GET_RESIDENTS, fetchResidents);
+  yield takeLatest(REQUEST_GET_TASKS, fetchTasks);
   yield takeLatest(REQUEST_SET_ASSIGNED_RESIDENT, setAssignedResident);
   yield takeLatest(REQUEST_SET_OCCURENCE, setOccurenceTask);
 }

@@ -3,9 +3,11 @@ import { makeStyles } from '@material-ui/styles';
 import { IconButton, Grid, Typography } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-
+import validate from '../TaskAdd/components/TaskAddForm/validate';
+import { reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
+import { getTasks } from '../../common/actions';
 import { TasksToolbar, TaskCard } from './components';
-import mockData from './data';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,10 +24,34 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const TaskList = () => {
-  const classes = useStyles();
+const mapStateToProps = (state, ownProps) => {
+  let initial = [];
+  console.log(state.rootReducer.tasks);
+  if (state.rootReducer.tasks) {
+    initial = state.rootReducer.tasks.map(
+      task => {
+        return {
+          title: task.description,
+          name: task.assignedResident,
+          updatedAt: task.endDate,
+        };
+      }
+    )
+  }
+  ownProps.options=initial;
+  return {
+   initialValues:{
+   }
+  };
+};
+const mapDispatchToProps = dispatch =>{
+  dispatch(getTasks())
+};
 
-  const [tasks] = useState(mockData);
+const TaskList = props => {
+  const classes = useStyles();
+  const tasks = props.options;
+  console.log(tasks);
 
   return (
     <div className={classes.root}>
@@ -61,4 +87,10 @@ const TaskList = () => {
   );
 };
 
-export default TaskList;
+const ReduxTaskList = reduxForm({
+  form: 'TaskList', // a unique identifier for this form
+  validate,
+  enableReinitialize: true
+})(TaskList);
+
+export default connect(mapStateToProps,mapDispatchToProps)(ReduxTaskList);

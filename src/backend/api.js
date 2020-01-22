@@ -5,6 +5,7 @@ const app = express();
 var db = 'mongodb://localhost/test';
 var Resident = require('./Resident');
 var Task = require('./Task');
+
 var cors = require('cors');
 
 
@@ -126,9 +127,8 @@ api.get('/tasks/:id', (req, res) => {
     })
         .exec(function (err, task) {
             if (err) {
-                res.send('error has occured while getting a task');
+                res.status(400).end(JSON.stringify({ err: "error" }));
             } else {
-
                 res.json(task);
             }
         })
@@ -136,7 +136,6 @@ api.get('/tasks/:id', (req, res) => {
 
 //get all tasks
 api.get('/tasks', (req, res) => {
-    console.log('getting all tasks')
     Task.find({})
         .exec(function (err, tasks) {
             if (err) {
@@ -152,13 +151,18 @@ api.get('/tasks', (req, res) => {
 
 //create task
 api.post('/tasks', function (req, res) {
-    var newTask = new Task();
+    if (req.body.assignedResidents && req.body.assignedResidents.length === 0) {
+        res.status(400).end(JSON.stringify({ err: "Not enougth assigned residents" }));
+        return;
+    }
 
+    var newTask = new Task();
     newTask.description = req.body.description;
-    newTask.assignedResident = req.body.assignedResident;
-    newTask.isDone = req.body.isDone;
     newTask.startDate = new Date(parseInt(req.body.startDate));
     newTask.endDate = new Date(parseInt(req.body.endDate));
+    newTask.isRepeating = req.body.isRepeating;
+    newTask.assignedResidents = req.body.assignedResidents;
+    newTask.assignedResident = newTask.assignedResidents[0];
 
     newTask.save(function (err, task) {
         if (err) {
@@ -173,38 +177,86 @@ api.post('/tasks', function (req, res) {
 //update a task
 
 api.put('/tasks/:id', function (req, res) {
-    Task.findOneAndUpdate({
-        _id: req.params.id
-    },
-        {
-            $set: {
+    Task.findById(req.params.id, (err, task) => {
+        if (err || !task) { res.status(400).end(JSON.stringify({ err: "error : task doesn't exist" })); }
+        else {
+            let new_residents = task.toObject().assignedResidents;
+
+            //if no resident assigned to task
+            if (req.body.assignedResidents && req.body.assignedResidents.length === 0) {
+                res.status(400).end(JSON.stringify({ err: "No assigned residents" }));
+                return;
+
+                //if resident(s) exists
+            } else if (req.body.assignedResidents) {
+                new_residents = req.body.assignedResidents;
+            }
+            //update the index depending on number of residents
+            let new_index = task.index % new_residents.length;
+            let assignedResident = new_residents[new_index];
+
+            task.update({
                 description: req.body.description,
-                assignedResident: req.body.assignedResident,
-                isDone: req.body.isDone,
+                assignedResident,
+                assignedResidents: new_residents,
                 startDate: req.body.startDate,
-                endDate: req.body.endDate
-            }
-        },
-        { upsert: true },
-        function (err, newTask) {
-            if (err) {
-                res.status(500).end(JSON.stringify({ err: "error updating task" }));
-            } else {
-                console.log(newTask);
-                res.status(200).json(newTask);
-            }
+                endDate: req.body.endDate,
+                isRepeating: req.body.isRepeating,
+                index: new_index
+            }, (err, raw) => {
+                res.status(200).json(task);
+            });
         }
-    )
+    })
 })
 
-//delete a task
+//delete a task :  2 possibles scenarios
 api.delete('/tasks/:id', function (req, res) {
     Task.findOneAndRemove({
-        _id: req.params.id
+        //if the task is not repeatable, remove it
+        _id: req.params.id,
+        isRepeating: false
     }, function (err, task) {
         if (err) {
             res.status(500).end(JSON.stringify({ err: "error deleting task" }));
-        } else {
+        } else if (task === null) {
+            Task.findOne({
+                _id: req.params.id
+            },
+                function (err, task) {
+                    if (err || !task) {
+                        res.status(400).end(JSON.stringify({ err: "error deleting task" }));
+                    }
+                    /*if the task is repeatable, clicking on delete will :
+                    - increment the index
+                    - place in assignedResident the id of the next resident
+                    - increment the date of 1 week 
+                    */
+                    else {
+                        let start_date = task.toObject().startDate;
+                        let end_date = task.toObject().endDate;
+                        let index = task.toObject().index;
+                        let residents = task.toObject().assignedResidents;
+                        let new_index = (index + 1) % residents.length;
+                        start_date.setHours(start_date.getHours() + 168);
+                        end_date.setHours(end_date.getHours() + 168)
+                        task.update(
+                            {
+                                $set: {
+                                    startDate: start_date,
+                                    endDate: end_date,
+                                    index: new_index,
+                                    assignedResident: residents[new_index]
+                                }
+                            }, (err, raw) => {
+                                if (err) console.log(err, task, raw);
+                            }
+                        );
+                        res.status(204).end();
+                    }
+                })
+        }
+        else {
             console.log(task);
             res.status(204).end();
         }
@@ -224,11 +276,21 @@ api.get('/residentandhistasks/:id', function (req, res) {
         }
     })
 })
+
+//delete all tasks
+api.get('/cleantasks', function (req, res) {
+    Task.deleteMany(function (err) {
+        if (err) console.log(err);
+    });
+    res.end();
+})
+
+
 app.use(cors());
 app.use('/api', api);
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
 });
 app.listen(8080);

@@ -74,7 +74,7 @@ const TaskCard = props => {
               display="inline"
               variant="body2"
             >
-              To do before 01/01/2020
+              {task.updatedAt}
             </Typography>
           </Grid>
           <Grid
@@ -86,7 +86,7 @@ const TaskCard = props => {
               display="inline"
               variant="body2"
             >
-              Resident Name
+              {task.name}
             </Typography>
           </Grid>
         </Grid>
