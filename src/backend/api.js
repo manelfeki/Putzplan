@@ -187,10 +187,10 @@ api.get('/tasks', (req, res) => {
 api.post('/tasks', function (req, res) {
     var newTask = new Task();
     newTask.description = req.body.description;
-    newTask.startDate = new Date(parseInt(req.body.startDate));
-    newTask.endDate = new Date(parseInt(req.body.endDate));
+    newTask.startDate = req.body.startDate;
+    newTask.endDate = req.body.endDate;
     newTask.isRepeating = req.body.isRepeating;
-    newTask.taskStatus = req.body.taskStatus;
+    newTask.taskStatus = "Waiting";
     newTask.occurence = req.body.occurence;
     //newTask.assignedResidents = req.body.assignedResidents;
     Resident.find({}, (err, residents) => {
@@ -199,17 +199,20 @@ api.post('/tasks', function (req, res) {
             return;
         }
 
-        if (newTask.isRepeating) {
-            newTask.assignedResident = residents[0]._id;
-        } else {
-            newTask.assignedResident = req.body.assignedResident;
-        }
-
+      /*        if (newTask.isRepeating) {
+                  newTask.assignedResident = residents[0]._id;
+              } else {
+                  newTask.assignedResident = req.body.assignedResident;
+              }*/
+      newTask.assignedResident = req.body.assignedResident;
+      console.log(newTask.taskStatus);
+      console.log(newTask);
         newTask.save(function (err, task) {
             if (err) {
                 res.status(400).end(JSON.stringify({ err: "error saving task" }));
 
             } else {
+
                 res.end(JSON.stringify(task));
             }
         })

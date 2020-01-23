@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { IconButton, Grid, Typography } from '@material-ui/core';
+import { Grid, IconButton, Typography } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import validate from '../TaskAdd/components/TaskAddForm/validate';
 import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { getTasks } from '../../common/actions';
-import { TasksToolbar, TaskCard } from './components';
+import { TaskCard, TasksToolbar } from './components';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,9 +31,10 @@ const mapStateToProps = (state, ownProps) => {
     initial = state.rootReducer.tasks.map(
       task => {
         return {
+          id: task._id,
           title: task.description,
           name: task.assignedResident,
-          updatedAt: task.endDate,
+          before: task.endDate
         };
       }
     )

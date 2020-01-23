@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { TaskAddForm, TasksToolbar } from './components';
+import { TaskUpdateForm, TasksToolbar } from './components';
 import store from '../../store';
 
 const useStyles = makeStyles(theme => ({
@@ -23,7 +23,7 @@ function getResidentByName(name) {
   }).then(response => response.json());
 }
 
-const TaskAdd = () => {
+const TaskUpdate = () => {
   const addTaskEvent = values => {
     console.log(values);
     getResidentByName(store.getState().rootReducer.assignedResidentName).then(data => {
@@ -62,10 +62,10 @@ const TaskAdd = () => {
   return (<div className={classes.root}>
     <TasksToolbar/>
     <div style={{ padding: 15 }}>
-      <TaskAddForm onSubmit={addTaskEvent}/>
+      <TaskUpdateForm onSubmit={addTaskEvent}/>
     </div>
   </div>);
 };
 
-export default TaskAdd;
+export default TaskUpdate;
 
