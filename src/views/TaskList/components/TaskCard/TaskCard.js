@@ -6,8 +6,12 @@ import { Card, CardActions, CardContent, Divider, Grid, Typography } from '@mate
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import PeopleIcon from '@material-ui/icons/EmojiPeople';
 import DoneIcon from '@material-ui/icons/DoneOutline';
-import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { getTaskData } from '../../../../common/actions';
+import store from '../../../../store';
+
+import { Button } from 'react-bootstrap';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -41,7 +45,7 @@ const useStyles = makeStyles(theme => ({
 
 const TaskCard = props => {
   const { className, task, ...rest } = props;
-
+  const dispatch = useDispatch();
   const classes = useStyles();
 
   return (
@@ -57,8 +61,15 @@ const TaskCard = props => {
           align="center"
           gutterBottom
           variant="h4"
+
         >
-          {task.title}
+          <Link onClick={(e) => {
+            e.preventDefault();
+            dispatch(getTaskData(task.id));
+            if (store.getState().rootReducer.residents) {
+              window.location.href = `/tasks/update/${task.id}`;
+            }
+          }}>{task.title}</Link>
         </Typography>
       </CardContent>
       <Divider />
@@ -76,7 +87,7 @@ const TaskCard = props => {
               display="inline"
               variant="body2"
             >
-              {task.updatedAt}
+              {task.before}
             </Typography>
           </Grid>
           <Grid
@@ -97,7 +108,7 @@ const TaskCard = props => {
               </Link>
             </Typography>
 
-            
+
             <PeopleIcon className={classes.statsIcon}/>
             <Typography
               display="inline"

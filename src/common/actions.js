@@ -22,3 +22,6 @@ export const setTasks = tasks => ({ type: SET_TASKS, payload: tasks });
 export const REQUEST_GET_TASKS = 'REQUEST_GET_TASKS';
 export const getTasks = () => ({ type: "REQUEST_GET_TASKS" });
 
+export const REQUEST_GET_TASK_DATA = 'REQUEST_GET_TASK_DATA';
+export const getTaskData = TASK => ({ type: "REQUEST_GET_TASK_DATA", payload: TASK });
+

@@ -12,6 +12,8 @@ export const rootReducer = (state = { residents: [], assignedResidentName: '', t
       return { ...state, residents };
     case 'TASKS_RECEIVED':
       return { ...state, tasks: action.json };
+    case 'TASK_DATA_RECEIVED':
+      return { ...state, taskData: action.json };
     default:
       return state;
   }

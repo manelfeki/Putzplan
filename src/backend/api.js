@@ -218,10 +218,10 @@ api.get('/tasks', (req, res) => {
 api.post('/tasks', function (req, res) {
     var newTask = new Task();
     newTask.description = req.body.description;
-    newTask.startDate = new Date(parseInt(req.body.startDate));
-    newTask.endDate = new Date(parseInt(req.body.endDate));
+    newTask.startDate = req.body.startDate;
+    newTask.endDate = req.body.endDate;
     newTask.isRepeating = req.body.isRepeating;
-    newTask.taskStatus = req.body.taskStatus;
+    newTask.taskStatus = "Waiting";
     newTask.occurence = req.body.occurence;
     //newTask.assignedResidents = req.body.assignedResidents;
     Resident.find({}, (err, residents) => {
@@ -229,22 +229,18 @@ api.post('/tasks', function (req, res) {
             res.status(400).json({ err: "error" });
             return;
         }
-        if (!req.body.assignedResident) {
-            res.status(400).json({ err: "no resident assigned" });
-            return;
-        }
-        newTask.assignedResident = req.body.assignedResident;
-        if (newTask.isRepeating) {
-            const index = residents.findIndex(resident => req.body.assignedResident === resident._id);
-            newTask.index = index;
-        }
-
-
+      newTask.assignedResident = req.body.assignedResident;
+      if (newTask.isRepeating) {
+        const index = residents.findIndex(resident => req.body.assignedResident === resident._id);
+        newTask.index = index;
+      }
+      console.log(newTask);
         newTask.save(function (err, task) {
             if (err) {
                 res.status(400).end(JSON.stringify({ err: "error saving task" }));
 
             } else {
+
                 res.end(JSON.stringify(task));
             }
         })

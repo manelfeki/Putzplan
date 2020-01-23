@@ -6,4 +6,5 @@ export { default as SignIn } from './SignIn';
 export { default as SignUp } from './SignUp';
 export { default as UserList } from './UserList';
 export { default as UserAdd } from './UserAdd';
+export { default as TaskUpdate } from './TaskUpdate';
 export { default as TaskAdd } from './TaskAdd';

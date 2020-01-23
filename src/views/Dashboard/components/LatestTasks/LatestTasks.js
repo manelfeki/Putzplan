@@ -19,7 +19,6 @@ import {
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
-import mockData from './data';
 import { StatusBullet } from 'components';
 import { connect } from 'react-redux';
 import { getTasks } from '../../../../common/actions';
@@ -126,7 +125,7 @@ const LatestTasks = props => {
                   >
                     <TableCell>{task.description}</TableCell>
                     <TableCell>
-                      {task.startDate.format('DD/MM/YYYY')}
+                      {task.startDate}
                     </TableCell>
                     <TableCell>
                       <div className={classes.statusContainer}>

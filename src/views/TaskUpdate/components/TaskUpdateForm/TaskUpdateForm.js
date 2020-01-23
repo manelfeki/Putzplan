@@ -10,7 +10,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Card from '@material-ui/core/Card';
 import { connect } from 'react-redux';
 import CardActions from '@material-ui/core/CardActions';
-import { setAssignedResident, setOccurenceTask } from '../../../../common/actions';
+import { getTaskData, setAssignedResident, setOccurenceTask } from '../../../../common/actions';
 import { options } from '../../../Dashboard/components/LatestSales/chart';
 import RenderSelectField from '../RenderSelectField';
 import DatePicker, { formatDates, normalizeDates } from '../DatePicker/DatePicker';
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
-    width: '50%',
+    width: '50%'
   },
   margin: {
     margin: theme.spacing(1),
@@ -52,18 +52,18 @@ const theme = createMuiTheme({
 const renderTextField = (
   { input, label, meta: { touched, error }, ...custom }
 ) => (
-    <TextField
-      label={label}
-      helperText={touched && error}
-      {...input}
-      {...custom}
-    />
-  );
+  <TextField
+    label={label}
+    helperText={touched && error}
+    {...input}
+    {...custom}
+  />
+);
 
 
 const renderCheckbox = ({ input, label }) => (
   <Switch label={label}
-    onChange={input.onChange}
+          onChange={input.onChange}
   />
 );
 
@@ -78,7 +78,9 @@ const mapStateToProps = (state, ownProps) => {
 
   let initial = [];
   if (state.rootReducer.residents) {
-    state.rootReducer.residents.map(function (item, i) { initial.push(formatResidentForSelect(item)); })
+    state.rootReducer.residents.map(function(item, i) {
+      initial.push(formatResidentForSelect(item));
+    });
   }
   ownProps.options = initial;
   const isChecked = !selector(state, 'repetitive');
@@ -101,7 +103,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 
-const TaskAddForm = props => {
+const TaskUpdateForm = props => {
   const classes = useStyles();
   // useState is a hook
   const [occurence, setOccurence] = React.useState('Every week');
@@ -204,15 +206,15 @@ const TaskAddForm = props => {
             <CardActions disableSpacing>
               <ThemeProvider theme={theme}>
                 <Button variant="contained" color="secondary" className={classes.margin}
-                  disabled={pristine || submitting}
-                  type="submit"
+                        disabled={pristine || submitting}
+                        type="submit"
                 >
                   Submit
                 </Button>
               </ThemeProvider>
               <ThemeProvider theme={theme}>
                 <Button variant="contained" color="link" className={classes.margin} disabled={pristine || submitting}
-                  type="button" onClick={reset}>
+                        type="button" onClick={reset}>
                   Clear
                 </Button>
               </ThemeProvider>
@@ -225,10 +227,10 @@ const TaskAddForm = props => {
 };
 
 const ReduxTaskAddForm = reduxForm({
-  form: 'TaskAddForm', // a unique identifier for this form
+  form: 'TaskUpdateForm', // a unique identifier for this form
   validate,
   enableReinitialize: true
-})(TaskAddForm);
+})(TaskUpdateForm);
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReduxTaskAddForm);

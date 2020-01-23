@@ -9,6 +9,7 @@ import {
   UserList as UserListView,
   UserAdd as UserAddView,
   TaskAdd as TaskAddView,
+  TaskUpdate as TaskUpdateView,
   Account as AccountView,
   SignUp as SignUpView,
   SignIn as SignInView,
@@ -52,6 +53,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/tasks/add"
+      />
+      <RouteWithLayout
+        component={TaskUpdateView}
+        exact
+        layout={MainLayout}
+        path="/tasks/update/:id"
       />
       <RouteWithLayout
         component={AccountView}
