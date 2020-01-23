@@ -14,10 +14,10 @@ const TaskSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId
     },
     startDate: {
-        type: String
+        type: Date
     },
     endDate: {
-        type: String
+        type: Date
     },
     isRepeating: {
         type: Boolean
