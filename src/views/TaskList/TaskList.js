@@ -38,9 +38,6 @@ const useStyles = makeStyles(theme => ({
 //   return residentName;
 // }
 
-
-
-
 const mapStateToProps = (state, ownProps) => {
   let initial = [];
   console.log(state.rootReducer.tasks);
@@ -51,6 +48,7 @@ const mapStateToProps = (state, ownProps) => {
           title: task.description,
           name: task.resident.name,
           updatedAt: task.endDate,
+          isDone : task.isDone,
         };
       }
     )
