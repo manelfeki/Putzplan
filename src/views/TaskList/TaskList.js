@@ -49,6 +49,7 @@ const mapStateToProps = (state, ownProps) => {
           title: task.title,
           name: task.resident,
           before: task.before,
+          occurence: task.occurence,
           isDone : (task.isDone !== "Waiting"),
         };
       }

@@ -2,18 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
-import { Card, CardActions, CardContent, Divider, Grid, Typography, CardHeader } from '@material-ui/core';
+import { Card, CardActions, CardContent, CardHeader, Divider, Grid, Typography } from '@material-ui/core';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import PeopleIcon from '@material-ui/icons/EmojiPeople';
 import DoneIcon from '@material-ui/icons/DoneOutline';
+import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { deleteTask, getTaskData, markTaskDone } from '../../../../common/actions';
+import { deleteTask, getTaskData } from '../../../../common/actions';
 import store from '../../../../store';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
-import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -61,18 +61,20 @@ const TaskCard = props => {
       <CardHeader
         avatar={
           <IconButton>
-          <DeleteOutlineIcon onClick={() => {
-            dispatch(deleteTask(task.id));
-            window.location.reload();
-          }}/>
+            <DeleteOutlineIcon onClick={() => {
+              dispatch(deleteTask(task.id));
+              window.location.reload();
+            }}/>
           </IconButton>
         }
         action={
           <IconButton>
-            <DoneOutlineIcon onClick={() => {
-              dispatch(markTaskDone(task.id));
+            {!task.isDone ? <DoneOutlineIcon onClick={() => {
+              dispatch(deleteTask(task.id));
               window.location.reload();
-            }}/>
+            }}/> : <Typography variant="body2" color="textSecondary" component="p">
+              Done
+            </Typography>}
           </IconButton>
         }
       />
@@ -94,6 +96,9 @@ const TaskCard = props => {
             }
           }}>{task.title}</Link>
         </Typography>
+        {task.occurence>0 ?  <Typography variant="body2" color="textSecondary" component="p">
+          Repeats every {task.occurence} week
+        </Typography> : <Typography> &nbsp;&nbsp;&nbsp;</Typography>}
       </CardContent>
       <Divider />
       <CardActions>

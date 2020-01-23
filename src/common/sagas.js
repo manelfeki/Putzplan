@@ -46,6 +46,7 @@ function* fetchTasks() {
       formattedTask.before=task.endDate;
       formattedTask.isDone=task.taskStatus;
       formattedTask.id=task._id;
+      formattedTask.occurence=task.occurence;
       return formattedTask;
     });
     console.log(mergedTasks);
@@ -106,7 +107,6 @@ function* markTaskDone({ payload }) {
     body,
     headers})
     .then(response => response.json(), );
-  console.log('yes',json);
   yield put({ type: "REQUEST_GET_TASKS", json: json, });
 }
 
