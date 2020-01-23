@@ -153,57 +153,91 @@ api.get('/cleanresidents', function (req, res) {
 
 //TASK API
 
+
+//generate 3 coming repetitive task (used in get tasks)
+const NREPTASK = 3;
+const genRepTask = (unparsed_residents) => (task) => {
+    if (task.isRepeating === false) {
+        return [task.toObject()];
+    }
+
+    residents = unparsed_residents.map(res => res.toObject());
+    task = task.toObject();
+    const actualDate = Date.now();
+    let simulatedTask = task;
+    while (simulatedTask.startDate.getTime() <= actualDate) {
+        task.startDate.setHours(task.startDate.getHours() + 168);
+        task.endDate.setHours(task.endDate.getHours() + 168);
+        task.index = (task.index + 1) % residents.length;
+    }
+    let result = [];
+    for (let i = 0; i < NREPTASK; i++) {
+        simulatedTask.assignedResident = residents[simulatedTask.index]._id;
+        let resTask = Object.assign({}, simulatedTask);
+        resTask.startDate = new Date(resTask.startDate.getTime());
+        resTask.endDate = new Date(resTask.endDate.getTime());
+        result.push(resTask);
+
+        simulatedTask.startDate.setHours(simulatedTask.startDate.getHours() + 168);
+        simulatedTask.endDate.setHours(simulatedTask.endDate.getHours() + 168);
+        simulatedTask.index = (simulatedTask.index + 1) % residents.length;
+    }
+    return result;
+};
+
 //get one task
 api.get('/tasks/:id', (req, res) => {
-
-    Task.findOne({
-        _id: req.params.id
-    })
-        .exec(function (err, task) {
-            if (err) {
-                res.status(400).end(JSON.stringify({ err: "error" }));
-            } else {
-                res.json(task);
-            }
+    Resident.find({}, (err, residents) => {
+        Task.findOne({
+            _id: req.params.id
         })
+            .exec(function (err, task) {
+                if (err) {
+                    res.status(400).end(JSON.stringify({ err: "error" }));
+                } else {
+                    res.json(genRepTask(residents)(task));
+                }
+            })
+    })
 })
 
 //get all tasks
 api.get('/tasks', (req, res) => {
-    Task.find({})
-        .exec(function (err, tasks) {
-            if (err) {
-                res.send('error has occured');
-            } else {
-
-                res.json(tasks);
-            }
-        })
+    Resident.find({}, (err, residents) => {
+        Task.find({})
+            .exec(function (err, tasks) {
+                if (err) {
+                    res.send('error has occured');
+                } else { res.json(tasks.flatMap(genRepTask(residents))); }
+            })
+    })
 })
-
 
 
 //create task
 api.post('/tasks', function (req, res) {
     var newTask = new Task();
     newTask.description = req.body.description;
-    newTask.startDate = req.body.startDate;
-    newTask.endDate = req.body.endDate;
+    newTask.startDate = new Date(req.body.startDate);
+    newTask.endDate = new Date(req.body.endDate);
     newTask.isRepeating = req.body.isRepeating;
     newTask.taskStatus = "Waiting";
     newTask.occurence = req.body.occurence;
-    //newTask.assignedResidents = req.body.assignedResidents;
     Resident.find({}, (err, residents) => {
         if (err) {
             res.status(400).json({ err: "error" });
             return;
         }
-      newTask.assignedResident = req.body.assignedResident;
-      if (newTask.isRepeating) {
-        const index = residents.findIndex(resident => req.body.assignedResident === resident._id);
-        newTask.index = index;
-      }
-      console.log(newTask);
+        newTask.assignedResident = req.body.assignedResident;
+        if (newTask.isRepeating) {
+            const index = residents.findIndex(resident => req.body.assignedResident === resident.id);
+            if (index === -1) {
+                res.status(400).json({ err: "resident not found" });
+                return;
+            }
+            newTask.index = index;
+        }
+        console.log(newTask);
         newTask.save(function (err, task) {
             if (err) {
                 res.status(400).end(JSON.stringify({ err: "error saving task" }));
