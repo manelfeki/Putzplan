@@ -26,8 +26,6 @@ const TaskAdd = () => {
   const addTaskEvent = values => {
     console.log(values);
     getResidentByName(store.getState().rootReducer.assignedResidentName).then(data => {
-      // need to stringify the data before sending it
-      console.log(data);
       let body = JSON.stringify({
         description: values.description,
         assignedResident: data._id,
@@ -37,11 +35,9 @@ const TaskAdd = () => {
         occurence: parseInt(values.occurence) ? parseInt(values.occurence) : 0,
         taskStatus: ''
       });
-      // allow json
       let headers = new Headers();
       headers.append('Accept', 'application/json');
       headers.append('Content-Type', 'application/json');
-      // promise
       fetch('http://localhost:8080/api/tasks', {
         method: 'POST',
         body,

@@ -43,25 +43,27 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const statusColors = {
-  done: 'success',
-  waiting: 'info',
-  expired: 'danger'
+  Done: 'success',
+  Waiting: 'info',
+  Expired: 'danger'
 };
 
 const mapStateToProps = (state, ownProps) => {
   let initial = [];
   if (state.rootReducer.tasks) {
     initial = state.rootReducer.tasks.map(
-      resident => {
+      task => {
         return {
-          id: resident._id,
-          name: resident.name,
-          phone: resident.phoneNumber,
+          id: task.id,
+          title: task.title,
+          before: task.before,
+          status: task.isDone
         };
       }
     )
   }
   ownProps.options=initial;
+  console.log('this is the initial',initial);
   return {
     initialValues:{
     }
@@ -123,9 +125,9 @@ const LatestTasks = props => {
                     hover
                     key={task.id}
                   >
-                    <TableCell>{task.description}</TableCell>
+                    <TableCell>{task.title}</TableCell>
                     <TableCell>
-                      {task.startDate}
+                      {task.before}
                     </TableCell>
                     <TableCell>
                       <div className={classes.statusContainer}>

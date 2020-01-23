@@ -12,7 +12,6 @@ import {
 import { push } from 'connected-react-router';
 
 function* fetchResidents() {
-  // allow json
   let headers = new Headers();
   headers.append('Accept', 'application/json');
   headers.append('Content-Type', 'application/json');

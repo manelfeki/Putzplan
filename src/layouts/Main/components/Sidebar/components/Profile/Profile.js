@@ -50,7 +50,7 @@ const Profile = props => {
       >
         {user.name}
       </Typography>
-      <Typography variant="body2">{user.bio}</Typography>
+      <Typography variant="body2">Responsible</Typography>
     </div>
   );
 };
