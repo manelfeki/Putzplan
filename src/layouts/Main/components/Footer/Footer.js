@@ -21,8 +21,7 @@ const Footer = props => {
       className={clsx(classes.root, className)}
     >
       <Typography variant="caption">
-        Created with love for the environment. By designers and developers who
-        love to work together!
+        Putzplan Application made by : Louis OLIVIER, Manel FEKI, Luke DAVIS
       </Typography>
     </div>
   );

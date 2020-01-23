@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { getTaskData } from '../../../../common/actions';
 import store from '../../../../store';
 
+import { Button } from 'react-bootstrap';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -54,7 +55,7 @@ const TaskCard = props => {
     >
       <CardContent>
         <div className={classes.imageContainer}>
-          <DoneIcon className={classes.doneIcon} />
+          {task.isDone ? <DoneIcon className={classes.doneIcon} /> : <AccessTimeIcon className={classes.AccessTimeIcon} />}
         </div>
         <Typography
           align="center"
@@ -93,7 +94,22 @@ const TaskCard = props => {
             className={classes.statsItem}
             item
           >
-            <PeopleIcon className={classes.statsIcon} />
+            <Typography
+              display="block"
+              variant="body3"
+            >
+              <Link to="/tasks/add">
+                <Button
+                  color="primary"
+                 variant="contained"
+          >
+                  EDIT
+                </Button>
+              </Link>
+            </Typography>
+
+
+            <PeopleIcon className={classes.statsIcon}/>
             <Typography
               display="inline"
               variant="body2"

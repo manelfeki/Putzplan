@@ -31,7 +31,7 @@ const TaskAdd = () => {
       console.log(data);
       let body = JSON.stringify({
         description: values.description,
-        assignedResident: data,
+        assignedResident: data._id,
         startDate: values.dateStart,
         endDate: values.dateEnd,
         isRepeating: values.repetitive,
@@ -60,9 +60,9 @@ const TaskAdd = () => {
   };
   const classes = useStyles();
   return (<div className={classes.root}>
-    <TasksToolbar/>
+    <TasksToolbar />
     <div style={{ padding: 15 }}>
-      <TaskAddForm onSubmit={addTaskEvent}/>
+      <TaskAddForm onSubmit={addTaskEvent} />
     </div>
   </div>);
 };
