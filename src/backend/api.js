@@ -157,6 +157,12 @@ api.get('/cleanresidents', function (req, res) {
 //generate 3 coming rpetitive task (used in get tasks)
 const NREPTASK = 3;
 const genRepTask = (residents) => (task) => {
+    if (task.isRepeating === false) {
+        return [task];
+    }
+
+    residents = residents.map(res => res.toObject());
+    task = task.toObject();
     const actualDate = Date.now();
     let simulatedTask = task;
     while (simulatedTask.startDate.getTime() <= actualDate) {
@@ -164,8 +170,19 @@ const genRepTask = (residents) => (task) => {
         task.endDate.setHours(task.endDate.getHours() + 168);
         task.index = (task.index + 1) % residents.length;
     }
-    simulatedTask.assignedResident = residents[simulatedTask.index]._id;
-    return [simulatedTask]
+    let result = [];
+    for (let i = 0; i < NREPTASK; i++) {
+        simulatedTask.assignedResident = residents[simulatedTask.index]._id;
+        let resTask = Object.assign({}, simulatedTask);
+        resTask.startDate = new Date(resTask.startDate.getTime());
+        resTask.endDate = new Date(resTask.endDate.getTime());
+        result.push(resTask);
+
+        simulatedTask.startDate.setHours(simulatedTask.startDate.getHours() + 168);
+        simulatedTask.endDate.setHours(simulatedTask.endDate.getHours() + 168);
+        simulatedTask.index = (simulatedTask.index + 1) % residents.length;
+    }
+    return result;
 };
 
 //get one task
@@ -191,10 +208,7 @@ api.get('/tasks', (req, res) => {
             .exec(function (err, tasks) {
                 if (err) {
                     res.send('error has occured');
-                } else {
-                    res.json(tasks.flatMap(genRepTask(residents))
-                    );
-                }
+                } else { res.json(tasks.flatMap(genRepTask(residents))); }
             })
     })
 })
