@@ -153,34 +153,51 @@ api.get('/cleanresidents', function (req, res) {
 
 //TASK API
 
+
+//generate 3 coming rpetitive task (used in get tasks)
+const NREPTASK = 3;
+const genRepTask = (residents) => (task) => {
+    const actualDate = Date.now();
+    let simulatedTask = task;
+    while (simulatedTask.startDate.getTime() <= actualDate) {
+        task.startDate.setHours(task.startDate.getHours() + 168);
+        task.endDate.setHours(task.endDate.getHours() + 168);
+        task.index = (task.index + 1) % residents.length;
+    }
+    simulatedTask.assignedResident = residents[simulatedTask.index]._id;
+    return [simulatedTask]
+};
+
 //get one task
 api.get('/tasks/:id', (req, res) => {
-
-    Task.findOne({
-        _id: req.params.id
-    })
-        .exec(function (err, task) {
-            if (err) {
-                res.status(400).end(JSON.stringify({ err: "error" }));
-            } else {
-                res.json(task);
-            }
+    Resident.find({}, (err, residents) => {
+        Task.findOne({
+            _id: req.params.id
         })
+            .exec(function (err, task) {
+                if (err) {
+                    res.status(400).end(JSON.stringify({ err: "error" }));
+                } else {
+                    res.json(genRepTask(residents)(task));
+                }
+            })
+    })
 })
 
 //get all tasks
 api.get('/tasks', (req, res) => {
-    Task.find({})
-        .exec(function (err, tasks) {
-            if (err) {
-                res.send('error has occured');
-            } else {
-
-                res.json(tasks);
-            }
-        })
+    Resident.find({}, (err, residents) => {
+        Task.find({})
+            .exec(function (err, tasks) {
+                if (err) {
+                    res.send('error has occured');
+                } else {
+                    res.json(tasks.flatMap(genRepTask(residents))
+                    );
+                }
+            })
+    })
 })
-
 
 
 //create task
