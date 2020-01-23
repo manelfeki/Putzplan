@@ -156,12 +156,12 @@ api.get('/cleanresidents', function (req, res) {
 
 //generate 3 coming repetitive task (used in get tasks)
 const NREPTASK = 3;
-const genRepTask = (residents) => (task) => {
+const genRepTask = (unparsed_residents) => (task) => {
     if (task.isRepeating === false) {
         return [task.toObject()];
     }
 
-    residents = residents.map(res => res.toObject());
+    residents = unparsed_residents.map(res => res.toObject());
     task = task.toObject();
     const actualDate = Date.now();
     let simulatedTask = task;
