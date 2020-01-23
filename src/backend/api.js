@@ -198,14 +198,11 @@ api.post('/tasks', function (req, res) {
             res.status(400).json({ err: "error" });
             return;
         }
-
-      /*        if (newTask.isRepeating) {
-                  newTask.assignedResident = residents[0]._id;
-              } else {
-                  newTask.assignedResident = req.body.assignedResident;
-              }*/
       newTask.assignedResident = req.body.assignedResident;
-      console.log(newTask.taskStatus);
+      if (newTask.isRepeating) {
+        const index = residents.findIndex(resident => req.body.assignedResident === resident._id);
+        newTask.index = index;
+      }
       console.log(newTask);
         newTask.save(function (err, task) {
             if (err) {
