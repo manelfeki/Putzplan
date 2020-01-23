@@ -12,15 +12,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-async function getResidentByName(name)
-{
+async function getResidentByName(name) {
   let headers = new Headers();
   headers.append('Accept', 'application/json');
   headers.append('Content-Type', 'application/json');
   let response = await fetch(`http://localhost:8080/api/residents/${name}`, {
     method: 'GET',
-    headers});
-  let resident = await response.text();
+    headers
+  });
+  let resident = await response.json();
   return resident;
 }
 
@@ -28,13 +28,14 @@ const TaskAdd = () => {
   const addTaskEvent = values => {
     console.log(values);
     console.log(store.getState().rootReducer.assignedResidentName);
-    const  resident= getResidentByName(store.getState().rootReducer.assignedResidentName).then(data => {
+    const resident = getResidentByName(store.getState().rootReducer.assignedResidentName).then(data => {
       console.log(data);
+      return data;
     }).then(data => {
       // need to stringify the data before sending it
       let body = JSON.stringify({
         description: values.description,
-        assignedResident: data,
+        assignedResident: data._id,
         startDate: new Date(values.dateStart),
         endDate: new Date(values.dateEnd),
         isRepeating: values.repetitive
@@ -60,9 +61,9 @@ const TaskAdd = () => {
   };
   const classes = useStyles();
   return (<div className={classes.root}>
-    <TasksToolbar/>
+    <TasksToolbar />
     <div style={{ padding: 15 }}>
-      <TaskAddForm onSubmit={addTaskEvent}/>
+      <TaskAddForm onSubmit={addTaskEvent} />
     </div>
   </div>);
 };
