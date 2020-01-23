@@ -25,31 +25,31 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-// async function getResidentById(residentId)
-// {
-//   let headers = new Headers();
-//   headers.append('Accept', 'application/json');
-//   headers.append('Content-Type', 'application/json');
-//   let response = await fetch(`http://localhost:8080/api/residents/${residentId}`, {
-//     method: 'GET',
-//     headers});
-//   let residentName = await response.text();
-//   console.log(residentName);
-//   return residentName;
-// }
+async function getResidentById(id) {
+  let headers = new Headers();
+  headers.append('Accept', 'application/json');
+  headers.append('Content-Type', 'application/json');
+  return fetch(`http://localhost:8080/api/residents/${id}`, {
+    method: 'GET',
+    headers
+  });
+}
 
 const mapStateToProps = (state, ownProps) => {
   let initial = [];
-  console.log(state.rootReducer.tasks);
+  let headers = new Headers();
+  headers.append('Accept', 'application/json');
+  headers.append('Content-Type', 'application/json');
+
   if (state.rootReducer.tasks) {
     initial = state.rootReducer.tasks.map(
       task => {
         return {
-          id: task._id,
-          title: task.description,
-          name: task.resident.name,
-          before: task.endDate,
-          isDone : task.isDone,
+          id: task.id,
+          title: task.title,
+          name: task.resident,
+          before: task.before,
+          isDone : (task.isDone !== "Waiting"),
         };
       }
     )

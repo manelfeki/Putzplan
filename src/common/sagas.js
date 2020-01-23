@@ -5,7 +5,8 @@ import {
   REQUEST_SET_OCCURENCE,
   REQUEST_GET_TASKS,
   DELETE_RESIDENT,
-  REQUEST_GET_TASK_DATA
+  REQUEST_GET_TASK_DATA,
+  DELETE_TASK, MARK_TASK_DONE
 } from './actions';
 import { push } from 'connected-react-router';
 
@@ -39,9 +40,15 @@ function* fetchTasks() {
     const mergedTasks = tasks.map(task => {
       const id = task.assignedResident;
       const resident = residents.find(resident => id === resident._id);
-      task.resident = resident;
-      return task;
-    })
+      const formattedTask={};
+      formattedTask.resident = resident.name;
+      formattedTask.title=task.description;
+      formattedTask.before=task.endDate;
+      formattedTask.isDone=task.taskStatus;
+      formattedTask.id=task._id;
+      return formattedTask;
+    });
+    console.log(mergedTasks);
   yield put({ type: "TASKS_RECEIVED", json: mergedTasks, });
 }
 
@@ -77,6 +84,32 @@ function* deleteResident({ payload }) {
   yield put({ type: "RESIDENT_DELETED", id: payload });
 }
 
+function* deleteTask({ payload }) {
+  yield fetch(`http://localhost:8080/api/tasks/${payload}`,
+    {
+      method: 'DELETE'
+    });
+  yield put({ type: "TASK_DELETED", id: payload });
+}
+
+function* markTaskDone({ payload }) {
+  // allow json
+  let headers = new Headers();
+  headers.append('Accept', 'application/json');
+  headers.append('Content-Type', 'application/json');
+  let body = JSON.stringify({
+    id: payload,
+    taskStatus: 'Done'
+  });
+  const json = yield fetch(`http://localhost:8080/api/tasks/done/${payload}`, {
+    method: 'PUT',
+    body,
+    headers})
+    .then(response => response.json(), );
+  console.log('yes',json);
+  yield put({ type: "REQUEST_GET_TASKS", json: json, });
+}
+
 export function* saga() {
   yield takeLatest(REQUEST_GET_RESIDENTS, fetchResidents);
   yield takeLatest(REQUEST_GET_TASKS, fetchTasks);
@@ -84,4 +117,6 @@ export function* saga() {
   yield takeLatest(REQUEST_SET_OCCURENCE, setOccurenceTask);
   yield takeLatest(REQUEST_GET_TASK_DATA, getTaskData);
   yield takeLatest(DELETE_RESIDENT, deleteResident);
+  yield takeLatest(DELETE_TASK, deleteTask);
+  yield takeLatest(MARK_TASK_DONE, markTaskDone);
 }

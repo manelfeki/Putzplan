@@ -13,7 +13,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function getResidentByName(name) {
-  console.log('the resident name', name);
   let headers = new Headers();
   headers.append('Accept', 'application/json');
   headers.append('Content-Type', 'application/json');

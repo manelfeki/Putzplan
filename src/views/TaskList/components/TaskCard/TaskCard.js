@@ -2,16 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
-import { Card, CardActions, CardContent, Divider, Grid, Typography } from '@material-ui/core';
+import { Card, CardActions, CardContent, Divider, Grid, Typography, CardHeader } from '@material-ui/core';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import PeopleIcon from '@material-ui/icons/EmojiPeople';
 import DoneIcon from '@material-ui/icons/DoneOutline';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { getTaskData } from '../../../../common/actions';
+import { deleteTask, getTaskData, markTaskDone } from '../../../../common/actions';
 import store from '../../../../store';
-
-import { Button } from 'react-bootstrap';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -40,6 +42,10 @@ const useStyles = makeStyles(theme => ({
   doneIcon: {
     color: theme.palette.success.dark,
     marginRight: theme.spacing(1)
+  },
+  waitingIcon: {
+    color: theme.palette.warning.light,
+    marginRight: theme.spacing(1)
   }
 }));
 
@@ -47,15 +53,32 @@ const TaskCard = props => {
   const { className, task, ...rest } = props;
   const dispatch = useDispatch();
   const classes = useStyles();
-
   return (
     <Card
       {...rest}
       className={clsx(classes.root, className)}
     >
+      <CardHeader
+        avatar={
+          <IconButton>
+          <DeleteOutlineIcon onClick={() => {
+            dispatch(deleteTask(task.id));
+            window.location.reload();
+          }}/>
+          </IconButton>
+        }
+        action={
+          <IconButton>
+            <DoneOutlineIcon onClick={() => {
+              dispatch(markTaskDone(task.id));
+              window.location.reload();
+            }}/>
+          </IconButton>
+        }
+      />
       <CardContent>
         <div className={classes.imageContainer}>
-          {task.isDone ? <DoneIcon className={classes.doneIcon} /> : <AccessTimeIcon className={classes.AccessTimeIcon} />}
+          {task.isDone ? <DoneIcon className={classes.doneIcon} /> : <HourglassEmptyIcon className={classes.waitingIcon} />}
         </div>
         <Typography
           align="center"
@@ -98,14 +121,6 @@ const TaskCard = props => {
               display="block"
               variant="body3"
             >
-              <Link to="/tasks/add">
-                <Button
-                  color="primary"
-                 variant="contained"
-          >
-                  EDIT
-                </Button>
-              </Link>
             </Typography>
 
 

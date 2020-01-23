@@ -219,6 +219,7 @@ api.post('/tasks', function (req, res) {
 //update a task
 
 api.put('/tasks/:id', function (req, res) {
+  console.log(req.body);
     Task.findById(req.params.id, (err, task) => {
         if (err || !task) { res.status(400).end(JSON.stringify({ err: "error : task doesn't exist" })); }
         else {
@@ -233,7 +234,7 @@ api.put('/tasks/:id', function (req, res) {
 
                 //update the index depending on number of residents
 
-                task.update({
+                task.updateOne({
                     description: req.body.description,
                     assignedResident,
                     startDate: req.body.startDate,
@@ -249,6 +250,23 @@ api.put('/tasks/:id', function (req, res) {
         }
     })
 })
+
+// mark a task as done
+
+api.put('/tasks/done/:id', function (req, res) {
+  console.log(req.body);
+  Task.findById(req.params.id, (err, task) => {
+    if (err || !task) { res.status(400).end(JSON.stringify({ err: "error : task doesn't exist" })); }
+    else {
+        //update the index depending on number of residents
+        task.updateOne({
+          taskStatus: req.body.taskStatus
+        }, (err, raw) => {
+          res.status(200).json(task);
+        });
+      }
+    });
+});
 
 //delete a task :  2 possibles scenarios
 api.delete('/tasks/:id', function (req, res) {
@@ -279,12 +297,12 @@ api.delete('/tasks/:id', function (req, res) {
                                 return;
                             }
 
-                            let start_date = task.toObject().startDate;
-                            let end_date = task.toObject().endDate;
+                            let start_date = new Date(task.toObject().startDate);
+                            let end_date = new Date(task.toObject().endDate);
                             let index = task.toObject().index;
                             let new_index = (index + 1) % residents.length;
                             start_date.setHours(start_date.getHours() + 168);
-                            end_date.setHours(end_date.getHours() + 168)
+                            end_date.setHours(end_date.getHours() + 168);
                             task.update(
                                 {
                                     $set: {
