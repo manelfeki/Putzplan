@@ -51,7 +51,7 @@ const TaskCard = props => {
     >
       <CardContent>
         <div className={classes.imageContainer}>
-          <DoneIcon className={classes.doneIcon} />
+          {task.isDone ? <DoneIcon className={classes.doneIcon} /> : <AccessTimeIcon className={classes.AccessTimeIcon} />}
         </div>
         <Typography
           align="center"

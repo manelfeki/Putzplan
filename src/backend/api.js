@@ -202,6 +202,10 @@ api.post('/tasks', function (req, res) {
         if (newTask.isRepeating) {
             newTask.assignedResident = residents[0]._id;
         } else {
+            if (!req.body.assignedResident) {
+                res.status(400).json({ err: "no resident assigned" });
+                return;
+            }
             newTask.assignedResident = req.body.assignedResident;
         }
 
