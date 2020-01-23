@@ -12,7 +12,7 @@ var cors = require('cors');
 const api = express.Router();
 
 //Connect to MongoDB
-mongoose.connect(db);
+mongoose.connect(db, { useFindAndModify: false });
 mongoose.connection.on('error', function (error) { console.log('Connection error:', error) });
 mongoose.connection.once('open', function () {
     console.log('connection has been made')
@@ -101,7 +101,6 @@ api.post('/residents', function (req, res) {
 //update a resident
 
 api.put('/residents/:id', function (req, res) {
-    console.log('yessaie')
     Resident.findOneAndUpdate({
         _id: req.params.id
     },
@@ -164,11 +163,12 @@ const genRepTask = (unparsed_residents) => (task) => {
     residents = unparsed_residents.map(res => res.toObject());
     task = task.toObject();
     const actualDate = Date.now();
-    let simulatedTask = task;
+  let simulatedTask = { ...task };
     while (simulatedTask.startDate.getTime() <= actualDate) {
         task.startDate.setHours(task.startDate.getHours() + 168);
         task.endDate.setHours(task.endDate.getHours() + 168);
         task.index = (task.index + 1) % residents.length;
+
     }
     let result = [];
     for (let i = 0; i < NREPTASK; i++) {
@@ -176,6 +176,13 @@ const genRepTask = (unparsed_residents) => (task) => {
         let resTask = Object.assign({}, simulatedTask);
         resTask.startDate = new Date(resTask.startDate.getTime());
         resTask.endDate = new Date(resTask.endDate.getTime());
+      if (task.taskStatus === 'Done') {
+        if (task.index === simulatedTask.index) {
+          resTask.taskStatus = 'Done';
+        } else {
+          resTask.taskStatus = 'Waiting';
+        }
+      }
         result.push(resTask);
 
         simulatedTask.startDate.setHours(simulatedTask.startDate.getHours() + 168);
@@ -287,19 +294,37 @@ api.put('/tasks/:id', function (req, res) {
 
 // mark a task as done
 
-api.put('/tasks/done/:id', function (req, res) {
-  console.log(req.body);
-  Task.findById(req.params.id, (err, task) => {
-    if (err || !task) { res.status(400).end(JSON.stringify({ err: "error : task doesn't exist" })); }
-    else {
-        //update the index depending on number of residents
-        task.updateOne({
-          taskStatus: req.body.taskStatus
-        }, (err, raw) => {
-          res.status(200).json(task);
-        });
+api.put('/tasks/done/:id', function(req, res) {
+  console.log(req.params);
+  Task.findOneAndUpdate(
+    {
+      _id: req.params.id
+    },
+    { taskStatus: 'Done' }
+    , function(err, task) {
+      if (err) {
+        console.warn(err, 'has occurred');
+        res.status(404);
+      } else {
+        res.status(200).send(task);
       }
-    });
+    }
+  );
+  // Task.findById(req.params.id, (err, task) => {
+  //   if (err || !task) { res.status(400).end(JSON.stringify({ err: "error : task doesn't exist" })); }
+  //   else {
+  //     //update the index depending on number of residents
+  //     task.updateOne({
+  //       taskStatus: task.taskStatus
+  //     },
+  //       [
+  //         { $set: {taskStatus: "Done"}}
+  //       ]
+  //       , (err, raw) => {
+  //       res.status(200).json(task);
+  //     });
+  //   }
+  // });
 });
 
 //delete a task :  2 possibles scenarios
@@ -334,6 +359,7 @@ api.delete('/tasks/:id', function (req, res) {
                             let start_date = new Date(task.toObject().startDate);
                             let end_date = new Date(task.toObject().endDate);
                             let index = task.toObject().index;
+                          let taskStatus = 'Waiting';
                             let new_index = (index + 1) % residents.length;
                             start_date.setHours(start_date.getHours() + 168);
                             end_date.setHours(end_date.getHours() + 168);
@@ -342,6 +368,7 @@ api.delete('/tasks/:id', function (req, res) {
                                     $set: {
                                         startDate: start_date,
                                         endDate: end_date,
+                                      taskStatus: taskStatus,
                                         index: new_index,
                                         assignedResident: residents[new_index]._id
                                     }
@@ -381,7 +408,7 @@ api.delete('/cleantasks', function (req, res) {
         if (err) console.log(err);
     });
     res.end();
-})
+});
 
 
 

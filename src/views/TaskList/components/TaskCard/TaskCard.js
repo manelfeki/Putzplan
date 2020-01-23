@@ -10,7 +10,7 @@ import DoneIcon from '@material-ui/icons/DoneOutline';
 import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { deleteTask, getTaskData } from '../../../../common/actions';
+import { deleteTask, getTaskData, markTaskDone } from '../../../../common/actions';
 import store from '../../../../store';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
@@ -70,7 +70,7 @@ const TaskCard = props => {
         action={
           <IconButton>
             {!task.isDone ? <DoneOutlineIcon onClick={() => {
-              dispatch(deleteTask(task.id));
+              dispatch(markTaskDone(task.id));
               window.location.reload();
             }}/> : <Typography variant="body2" color="textSecondary" component="p">
               Done
@@ -134,7 +134,7 @@ const TaskCard = props => {
               display="inline"
               variant="body2"
             >
-              {task.name}
+              {task.name.name}
             </Typography>
           </Grid>
         </Grid>

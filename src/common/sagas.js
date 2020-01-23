@@ -1,12 +1,13 @@
-import { takeLatest, put } from 'redux-saga/effects'
+import { put, takeLatest } from 'redux-saga/effects';
 import {
-  REQUEST_GET_RESIDENTS,
-  REQUEST_SET_ASSIGNED_RESIDENT,
-  REQUEST_SET_OCCURENCE,
-  REQUEST_GET_TASKS,
   DELETE_RESIDENT,
+  DELETE_TASK,
+  MARK_TASK_DONE,
+  REQUEST_GET_RESIDENTS,
   REQUEST_GET_TASK_DATA,
-  DELETE_TASK, MARK_TASK_DONE
+  REQUEST_GET_TASKS,
+  REQUEST_SET_ASSIGNED_RESIDENT,
+  REQUEST_SET_OCCURENCE
 } from './actions';
 import { push } from 'connected-react-router';
 
@@ -41,9 +42,10 @@ function* fetchTasks() {
       const id = task.assignedResident;
       const resident = residents.find(resident => id === resident._id);
       const formattedTask={};
-      formattedTask.resident = resident.name;
+      formattedTask.resident = resident;
       formattedTask.title=task.description;
-      formattedTask.before=task.endDate;
+      const date = task.endDate.split('T');
+      formattedTask.before = date[0];
       formattedTask.isDone=task.taskStatus;
       formattedTask.id=task._id;
       formattedTask.occurence=task.occurence;
@@ -102,6 +104,7 @@ function* markTaskDone({ payload }) {
     id: payload,
     taskStatus: 'Done'
   });
+  console.log('here in saga', payload);
   const json = yield fetch(`http://localhost:8080/api/tasks/done/${payload}`, {
     method: 'PUT',
     body,
