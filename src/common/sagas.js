@@ -24,7 +24,6 @@ function* fetchResidents() {
 }
 
 function* fetchTasks() {
-  // allow json
   let headers = new Headers();
   headers.append('Accept', 'application/json');
   headers.append('Content-Type', 'application/json');
@@ -67,7 +66,6 @@ function* getTaskData({ payload }) {
   console.log('yes',json);
   yield put({ type: "TASK_DATA_RECEIVED", json: json, });
   yield put(push('/users'))
-  //window.location.href='/tasks/update/'+payload;
 }
 
 function* setAssignedResident({ payload }) {

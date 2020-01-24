@@ -45,7 +45,7 @@ const TaskAdd = () => {
       }).then(async res => {
         if (res.status == 200) {
           console.log(await res.json());
-          // here should be the code to show the resident ont the list.
+          // here should be the code to show the resident on the list.
         } else {
           throw new Error(await res.json());
         }

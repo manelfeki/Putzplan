@@ -310,21 +310,6 @@ api.put('/tasks/done/:id', function(req, res) {
       }
     }
   );
-  // Task.findById(req.params.id, (err, task) => {
-  //   if (err || !task) { res.status(400).end(JSON.stringify({ err: "error : task doesn't exist" })); }
-  //   else {
-  //     //update the index depending on number of residents
-  //     task.updateOne({
-  //       taskStatus: task.taskStatus
-  //     },
-  //       [
-  //         { $set: {taskStatus: "Done"}}
-  //       ]
-  //       , (err, raw) => {
-  //       res.status(200).json(task);
-  //     });
-  //   }
-  // });
 });
 
 //delete a task :  2 possibles scenarios

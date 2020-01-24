@@ -4,7 +4,6 @@ import 'react-dates/lib/css/_datepicker.css';
 import { SingleDatePicker } from 'react-dates';
 import enLocale from 'moment/locale/en-au';
 import moment from 'moment';
-import { Field } from 'redux-form';
 
 class DatePicker extends PureComponent {
   constructor(props) {

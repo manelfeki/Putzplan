@@ -13,7 +13,7 @@ list of tasks : http://localhost:8080/api/tasks
 
 ## [Devias Kit - Admin Dashboard](https://react-material-dashboard.devias.io/dashboard)
 
-> Free React Dashboard made with [Material UI's](https://material-ui.com/?ref=devias-io) components, [React](https://reactjs.org/?ref=devias-io) and of course [create-react-app](https://facebook.github.io/create-react-app/?ref=devias-io) to boost your app development process! We'll launch a pro version soon, so if you are interested subscribe to our personal emailing list on [https://devias.io/](https://devias.io/)
+> Free React Dashboard made with [Material UI's](https://material-ui.com/?ref=devias-io) components, [React](https://reactjs.org/?ref=devias-io) and of course [create-react-app](https://facebook.github.io/create-react-app/?ref=devias-io) to boost your app development process!
 
 ## Quick start
 
